@@ -1,0 +1,156 @@
+---
+/**
+ * AboutMe — Intro + background copy and links.
+ * Uses global theme vars from src/styles/theme.css (--color-bg, --color-ink, --color-link).
+ */
+const baseUrl = import.meta.env.BASE_URL.endsWith('/')
+	? import.meta.env.BASE_URL
+	: `${import.meta.env.BASE_URL}/`;
+---
+
+<link rel="stylesheet" href="https://fonts.cdnfonts.com/css/pp-neue-montreal" />
+
+<section class="about-section" id="about" aria-label="About me">
+  <div class="about-page">
+    <div class="about-intro">
+      <h1 class="about-title">
+        My name is Pankaj Sharma and I’m a software engineer focused on building reliable, scalable backend systems.
+      </h1>
+    
+      <p class="about-paragraph">
+        I work primarily with Python and JavaScript, building APIs, real-time services, and cloud-backed applications. I care about clean architecture, performance, and long-term maintainability over quick fixes.
+      </p>
+    
+      <p class="about-paragraph">
+        If you'd like to discuss a project, collaboration, or opportunity, feel free to reach out at
+        <a class="about-link" href="mailto:ps3threee@email.com">ps3threee@email.com</a>
+      </p>
+    
+      <p class="about-links">
+        <a class="about-link" href="https://github.com/yourusername" target="_blank" rel="noopener">GitHub</a>
+        <span class="about-sep">|</span>
+        <a class="about-link" href="https://www.linkedin.com/in/yourusername" target="_blank" rel="noopener">LinkedIn</a>
+        <span class="about-sep">|</span>
+        <a class="about-link" href={`${baseUrl}resume.pdf`} target="_blank" rel="noopener">Resume</a>
+      </p>
+    
+      <p class="about-paragraph about-paragraph--spaced">
+        I’m a Computer Engineering graduate (GTU, 2025) with hands-on experience from backend and cloud engineering internships. I’ve worked on real-time systems, AI-powered APIs, authentication flows, and cloud deployments using AWS and Docker. Most of my learning comes from building real projects and iterating on better system design with each build.
+      </p>
+    </div>
+    
+
+    <div class="about-background" aria-label="Background">
+      <h2 class="about-background-title">Background</h2>
+    
+      <p class="about-background-text">
+        I started my journey in software development during my Computer Engineering studies at Gujarat Technological University (GTU), where I built a strong foundation in data structures, databases, and web development. Over time, I gravitated toward backend engineering and system design through hands-on projects.
+      </p>
+    
+      <p class="about-background-text">
+        During my internships, I worked on real-time backend systems, AI-powered APIs, authentication flows, and cloud infrastructure using AWS and Docker. These experiences helped me understand how production systems are built, deployed, and maintained at scale, and shaped my interest in building reliable backend services.
+      </p>
+    </div>
+    
+  </div>
+</section>
+
+<style>
+  /* Section uses central theme; no hardcoded hex. */
+  .about-section {
+    background: var(--color-bg);
+    color: var(--color-ink);
+  }
+
+  .about-page {
+    max-width: 1270px;
+    margin: 0 auto;
+    padding: 2.78rem 2.78rem 4rem;
+    min-height: 100vh;
+    font-family: "PP Neue Montreal", "NeueMontreal-Regular", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+
+  .about-title {
+    margin: 0 0 1.67rem;
+    font-weight: 400;
+    font-size: 2.78rem;
+    line-height: 3.33rem;
+    letter-spacing: 0;
+    color: var(--color-ink);
+  }
+
+  .about-paragraph {
+    margin: 0 0 1rem;
+    max-width: 65ch;
+    font-size: 1rem;
+    line-height: 1.67rem;
+    color: var(--color-ink);
+  }
+
+  .about-paragraph--spaced {
+    margin-top: 2.5rem;
+  }
+
+  .about-links {
+    margin: 0 0 0;
+    font-size: 1rem;
+    line-height: 1.67rem;
+  }
+
+  .about-sep {
+    margin: 0 0.4rem;
+    color: var(--color-ink);
+  }
+
+  .about-link {
+    color: var(--color-link);
+    text-decoration: underline;
+  }
+
+  .about-link:hover,
+  .about-link:focus-visible {
+    color: var(--color-link-hover);
+  }
+
+  /* Background subsection: heading + stacked paragraphs */
+  .about-background {
+    margin-top: 3.5rem;
+    padding-top: 0.5rem;
+  }
+
+  .about-background-title {
+    margin: 0 0 1rem;
+    font-weight: 400;
+    font-size: 1.33rem;
+    line-height: 1.4;
+    letter-spacing: 0;
+    color: var(--color-ink);
+  }
+
+  .about-background-text {
+    margin: 0 0 1rem;
+    max-width: 65ch;
+    font-size: 1rem;
+    line-height: 1.67rem;
+    color: var(--color-ink);
+  }
+
+  @media screen and (max-width: 768px) {
+    .about-page {
+      padding: 2rem 1.5rem 3rem;
+    }
+
+    .about-title {
+      font-size: 2.22rem;
+      line-height: 2.78rem;
+    }
+
+    .about-paragraph--spaced {
+      margin-top: 1.75rem;
+    }
+
+    .about-background {
+      margin-top: 2.5rem;
+    }
+  }
+</style>

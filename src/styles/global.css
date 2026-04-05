@@ -1,0 +1,39 @@
+/**
+ * Global styles — Base reset and layout.
+ * Imported once in Layout.astro so every page gets the same foundation.
+ * Theme variables live in theme.css (imported below).
+ */
+
+@import './theme.css';
+
+/* Base reset */
+html {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	min-height: 100%;
+	box-sizing: border-box;
+	scroll-behavior: smooth;
+	scrollbar-width: none; /* Firefox */
+}
+
+html::-webkit-scrollbar {
+	display: none; /* Chrome, Safari, Edge */
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: inherit;
+}
+
+body {
+	margin: 0 !important;
+	padding: 0 !important;
+	width: 100%;
+	min-height: 100vh;
+}
+
+:root {
+	font-family: 'Geist', 'Geist Sans', system-ui, sans-serif;
+}

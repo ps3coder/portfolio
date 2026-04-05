@@ -1,0 +1,547 @@
+---
+/**
+ * Projects — Collage of project cards + side slot; Projects | Case Study tabs.
+ * Section vars (--projects-*) alias global theme in theme.css for consistency.
+ * For central content later, consider moving PROJECTS to src/data/projects.ts.
+ */
+const PROJECTS = [
+  { id: "p1", tag: "PROJECT", meta: "#01 · UI / Frontend", title: "Layered Cards UI", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed commodo, arcu nec elementum congue, risus orci maximus ipsum, vel suscipit sem magna non urna. Integer vel purus a tortor varius condimentum.", tech: ["HTML", "CSS", "JavaScript", "UI"], snippet: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor." },
+  { id: "p2", tag: "PROJECT", meta: "#02 · Portfolio", title: "Minimal Portfolio Grid", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi feugiat, neque at dapibus posuere, mi nulla viverra arcu, ut malesuada justo ipsum at libero.", tech: ["Layout", "Accessibility", "Responsive"], snippet: "Lorem ipsum dolor sit amet. Consectetur adipiscing elit, sed do eiusmod." },
+  { id: "p3", tag: "PROJECT", meta: "#03 · Landing Page", title: "Product Landing Hero", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet est at urna iaculis aliquet. Vestibulum ante ipsum primis in faucibus.", tech: ["Hero", "CTA", "Motion"], snippet: "Lorem ipsum dolor sit amet, consectetur adipiscing. Ut enim ad minim." },
+  { id: "p4", tag: "PROJECT", meta: "#04 · Dashboard", title: "Stats Dashboard Widgets", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet nisi vitae ipsum aliquet interdum. Quisque ultricies, justo vel.", tech: ["Charts", "Cards", "States"], snippet: "Lorem ipsum dolor sit amet. Aenean sit amet nisi vitae ipsum aliquet." },
+  { id: "p5", tag: "PROJECT", meta: "#05 · E‑commerce", title: "Product Detail Page", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a risus nec urna pulvinar viverra. Donec sagittis, eros a dignissim varius.", tech: ["PDP", "Gallery", "Variants"], snippet: "Lorem ipsum dolor sit amet, consectetur. Etiam a risus nec urna." },
+  { id: "p6", tag: "PROJECT", meta: "#06 · Animation", title: "Hover Micro‑interactions", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus at purus a odio dignissim feugiat. Praesent tristique, lectus sit amet.", tech: ["Hover", "Easing", "Delight"], snippet: "Lorem ipsum dolor sit amet. Vivamus at purus a odio dignissim feugiat." },
+  { id: "p7", tag: "PROJECT", meta: "#07 · Components", title: "Reusable Card System", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id orci nec elit tristique laoreet. Nam bibendum, mi id.", tech: ["Components", "Tokens", "Consistency"], snippet: "Lorem ipsum dolor sit amet. Sed id orci nec elit tristique laoreet." },
+  { id: "p8", tag: "PROJECT", meta: "#08 · Case Study", title: "End‑to‑end Case Study", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut at augue sed urna pulvinar molestie. Aliquam erat volutpat. Integer.", tech: ["Research", "UX", "Delivery"], snippet: "Lorem ipsum dolor sit amet. Ut at augue sed urna pulvinar molestie." },
+];
+
+const POSITIONS = [
+  { top: "6%", left: "6%", rot: "-8deg", z: 2 },
+  { top: "12%", left: "26%", rot: "6deg", z: 3 },
+  { top: "22%", left: "12%", rot: "-3deg", z: 4 },
+  { top: "30%", left: "32%", rot: "10deg", z: 5 },
+  { top: "40%", left: "10%", rot: "-10deg", z: 6 },
+  { top: "50%", left: "30%", rot: "2deg", z: 7 },
+  { top: "58%", left: "14%", rot: "-2deg", z: 8 },
+  { top: "64%", left: "34%", rot: "8deg", z: 9 },
+];
+---
+
+<section class="projects-section" id="projects" aria-label="Projects">
+  <div class="projects-page">
+    <div class="projects-tabs" role="tablist" aria-label="Projects or Case Study">
+      <button type="button" class="projects-tab-btn is-active" role="tab" aria-selected="true" data-view="projects">Projects</button>
+      <span class="projects-tabs-sep" aria-hidden="true">|</span>
+      <button type="button" class="projects-tab-btn" role="tab" aria-selected="false" data-view="case-study">Case Study</button>
+    </div>
+    <div class="projects-content" data-active-view="projects">
+      <div class="projects-view" id="projectsView" aria-hidden="false">
+    <div class="projects-layout" aria-label="Projects layout">
+      <aside class="projects-left" aria-label="Project collage">
+        <div class="collage" id="projectsCollage" aria-label="Project cards">
+          {PROJECTS.map((p, idx) => {
+            const pos = POSITIONS[idx] ?? POSITIONS[POSITIONS.length - 1];
+            return (
+              <button
+                type="button"
+                class="card"
+                style={`top: ${pos.top}; left: ${pos.left}; z-index: ${pos.z}; --rot: ${pos.rot}; transform: rotate(${pos.rot}) translate3d(0,0,0);`}
+                data-rot={pos.rot}
+                aria-label={`${p.title} — open details`}
+                data-project-index={idx}
+              >
+                <div class="card__header">{p.title.toUpperCase()}</div>
+                <div class="card__body">{p.snippet || "Lorem ipsum dolor sit amet, consectetur adipiscing elit."}</div>
+              </button>
+            );
+          })}
+        </div>
+      </aside>
+      <section class="projects-right" aria-label="Project details">
+        <div class="side-slot" id="projectsSideSlot" aria-label="Selected card slot"></div>
+      </section>
+    </div>
+      </div>
+      <div class="case-study-view" id="caseStudyView" aria-hidden="true" hidden>
+        <p class="case-study-empty">Nothing to show for now.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLIP animation: card selection moves card to side slot; click outside clears -->
+<script define:vars={{ PROJECTS }}>
+  (function () {
+    const ANIM_MS = 520;
+    const EASE_OUT = "cubic-bezier(0.22, 1, 0.36, 1)";
+    let activeCard = null;
+    let activeProject = null;
+    const homeMap = new WeakMap();
+
+    /** FLIP: animate from first rect to last rect (collage -> slot or back) */
+    function animateFLIP(node, firstRect, lastRect, fromRotDeg, toRotDeg) {
+      const dx = firstRect.left - lastRect.left;
+      const dy = firstRect.top - lastRect.top;
+      const sx = firstRect.width / lastRect.width;
+      const sy = firstRect.height / lastRect.height;
+      node.classList.add("is-animating");
+      const from = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy}) rotate(${fromRotDeg}deg)`;
+      const to = `translate(0px, 0px) scale(1, 1) rotate(${toRotDeg}deg)`;
+      const anim = node.animate([{ transform: from }, { transform: to }], { duration: ANIM_MS, easing: EASE_OUT, fill: "both" });
+      anim.addEventListener("finish", () => {
+        node.classList.remove("is-animating");
+        if (node.classList.contains("is-in-slot")) {
+          node.style.transform = "none";
+        } else {
+          const home = homeMap.get(node);
+          node.style.transform = home?.transform ?? (toRotDeg === 0 ? "none" : `rotate(${toRotDeg}deg)`);
+        }
+      });
+    }
+
+    function selectCard(card, project) {
+      const sideSlot = document.getElementById("projectsSideSlot");
+      const collage = document.getElementById("projectsCollage");
+      if (!sideSlot || !collage) return;
+      if (activeCard === card) {
+        clearSelection();
+        return;
+      }
+      if (activeCard) clearSelection(false);
+      if (!homeMap.has(card)) {
+        homeMap.set(card, {
+          parent: collage,
+          top: card.style.top,
+          left: card.style.left,
+          zIndex: card.style.zIndex,
+          transform: card.style.transform,
+          rot: card.dataset.rot || "0",
+        });
+      }
+      const home = homeMap.get(card);
+      const fromRotDeg = Number.parseFloat((home?.rot || "0").replace("deg", "")) || 0;
+      const first = card.getBoundingClientRect();
+      card.classList.add("is-in-slot", "is-active");
+      card.style.top = "";
+      card.style.left = "";
+      card.style.zIndex = "10";
+      card.style.transform = "none";
+      sideSlot.appendChild(card);
+      const last = card.getBoundingClientRect();
+      animateFLIP(card, first, last, fromRotDeg, 0);
+      activeCard = card;
+      activeProject = project;
+    }
+
+    function clearSelection(skipAnimate) {
+      if (!activeCard) return;
+      const card = activeCard;
+      activeCard = null;
+      activeProject = null;
+      document.querySelectorAll(".projects-section .card.is-active").forEach((n) => n.classList.remove("is-active"));
+      const home = homeMap.get(card);
+      if (!home?.parent) return;
+      const toRotDeg = Number.parseFloat(String(home.rot || "0").replace("deg", "")) || 0;
+      const first = card.getBoundingClientRect();
+      card.classList.remove("is-in-slot");
+      home.parent.appendChild(card);
+      card.style.top = home.top;
+      card.style.left = home.left;
+      card.style.zIndex = home.zIndex;
+      card.style.transform = home.transform;
+      card.dataset.rot = String(home.rot || "0");
+      const last = card.getBoundingClientRect();
+      if (!skipAnimate) animateFLIP(card, first, last, 0, toRotDeg);
+    }
+
+    document.querySelectorAll(".projects-section .card").forEach((card, idx) => {
+      const project = PROJECTS[idx];
+      if (!project) return;
+      card.addEventListener("click", (e) => {
+        e.stopPropagation();
+        selectCard(card, project);
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      const t = e.target;
+      if (!(t instanceof Element)) return;
+      if (t.closest(".projects-section .card")) return;
+      if (t.closest("#projectsSideSlot")) return;
+      clearSelection();
+    });
+
+    window.__projectsClearSelection = clearSelection;
+  })();
+</script>
+<!-- Tab switch Projects | Case Study + Rough Notation on tab buttons -->
+<script is:inline>
+  (function () {
+    var content = document.querySelector(".projects-content");
+    var projectsView = document.getElementById("projectsView");
+    var caseStudyView = document.getElementById("caseStudyView");
+    var tabs = document.querySelectorAll(".projects-tab-btn");
+    if (!content || !projectsView || !caseStudyView || !tabs.length) return;
+
+    tabs.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var view = btn.getAttribute("data-view");
+        if (!view) return;
+        content.setAttribute("data-active-view", view);
+        if (view === "projects") {
+          projectsView.hidden = false;
+          projectsView.setAttribute("aria-hidden", "false");
+          caseStudyView.hidden = true;
+          caseStudyView.setAttribute("aria-hidden", "true");
+        } else {
+          caseStudyView.hidden = false;
+          caseStudyView.setAttribute("aria-hidden", "false");
+          projectsView.hidden = true;
+          projectsView.setAttribute("aria-hidden", "true");
+          if (window.__projectsClearSelection) window.__projectsClearSelection();
+        }
+        tabs.forEach(function (t) {
+          t.classList.toggle("is-active", t === btn);
+          t.setAttribute("aria-selected", t === btn ? "true" : "false");
+        });
+      });
+    });
+
+    var opts = { type: "box", color: "gray", animate: true, strokeWidth: 1, duration: 450 };
+    var isHover = window.matchMedia("(hover: hover)").matches;
+
+    function attachRoughNotation(annotate) {
+      tabs.forEach(function (btn) {
+        var annotation = null;
+        if (isHover) {
+          btn.addEventListener("mouseenter", function () {
+            if (annotation) annotation.hide();
+            annotation = annotate(btn, opts);
+            annotation.show();
+          });
+          btn.addEventListener("mouseleave", function () {
+            if (annotation) { annotation.hide(); annotation = null; }
+          });
+        } else {
+          btn.addEventListener("click", function () {
+            if (annotation) annotation.hide();
+            annotation = annotate(btn, opts);
+            annotation.show();
+            setTimeout(function () {
+              if (annotation) { annotation.hide(); annotation = null; }
+            }, opts.duration + 50);
+          });
+        }
+      });
+    }
+
+    function tryAttach() {
+      if (window.RoughNotation && window.RoughNotation.annotate) {
+        attachRoughNotation(window.RoughNotation.annotate);
+        return true;
+      }
+      return false;
+    }
+    if (!tryAttach()) window.addEventListener("load", tryAttach);
+  })();
+</script>
+<!-- Mouse-aware hover shadow on cards: RAF-throttled so only one update per frame (Step 3) -->
+<script is:inline>
+  (function () {
+    var cards = document.querySelectorAll(".projects-section .card");
+    var shadowBlur = 12;
+    var shadowSpread = 8;
+    var shadowIntensity = 0.08;
+    cards.forEach(function (card) {
+      function setShadow(px, py) {
+        card.style.boxShadow = px + "px " + py + "px " + shadowBlur + "px rgba(0,0,0," + shadowIntensity + ")";
+      }
+      function clearShadow() {
+        card.style.boxShadow = "";
+      }
+      var rafId = null;
+      var lastPx = 0, lastPy = 0;
+      function onMove(e) {
+        var rect = card.getBoundingClientRect();
+        var x = (e.clientX - rect.left) / rect.width;
+        var y = (e.clientY - rect.top) / rect.height;
+        var px = (x - 0.5) * shadowSpread;
+        var py = (y - 0.5) * shadowSpread;
+        lastPx = px;
+        lastPy = py;
+        if (rafId === null) {
+          rafId = requestAnimationFrame(function () {
+            rafId = null;
+            setShadow(lastPx, lastPy);
+          });
+        }
+      }
+      card.addEventListener("mouseenter", function (e) {
+        card.addEventListener("mousemove", onMove);
+        var rect = card.getBoundingClientRect();
+        var x = (e.clientX - rect.left) / rect.width;
+        var y = (e.clientY - rect.top) / rect.height;
+        var px = (x - 0.5) * shadowSpread;
+        var py = (y - 0.5) * shadowSpread;
+        setShadow(px, py);
+      });
+      card.addEventListener("mouseleave", function () {
+        card.removeEventListener("mousemove", onMove);
+        if (rafId !== null) cancelAnimationFrame(rafId);
+        rafId = null;
+        clearShadow();
+      });
+    });
+  })();
+</script>
+
+<style>
+  /* Alias global theme so this section stays consistent with site theme */
+  .projects-section {
+    --projects-bg: var(--color-bg);
+    --projects-ink: var(--color-ink);
+    --projects-muted: var(--color-muted);
+    --projects-line: var(--color-line);
+    --projects-paper: var(--color-paper);
+    --projects-radius: var(--radius);
+    --projects-radius-lg: var(--radius-lg);
+    background: var(--projects-bg);
+    color: var(--projects-ink);
+    font-family: "Courier Prime", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    letter-spacing: 0.2px;
+    padding-top: clamp(2.5rem, 6vw, 4rem);
+    padding-bottom: clamp(3rem, 8vw, 5rem);
+    overflow-x: hidden;
+    overflow-y: hidden;
+    min-height: 85vh;
+  }
+
+  .projects-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 18px 18px 42px;
+    overflow-x: hidden;
+  }
+
+  .projects-tabs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .projects-tab-btn {
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: var(--projects-ink);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 0.25rem;
+  }
+
+  .projects-tab-btn.is-active {
+    font-weight: 700;
+  }
+
+  .projects-tabs-sep {
+    color: var(--projects-muted);
+    font-size: 0.875rem;
+    user-select: none;
+  }
+
+  /* Case Study content: only visible when Case Study tab is active */
+  .projects-content[data-active-view="projects"] .case-study-view {
+    display: none !important;
+  }
+
+  .projects-content[data-active-view="case-study"] .case-study-view {
+    display: flex;
+  }
+
+  .case-study-view {
+    min-height: 200px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .case-study-empty {
+    margin: 0;
+    font-size: 0.9375rem;
+    color: var(--projects-muted);
+  }
+
+  .projects-layout {
+    display: grid;
+    grid-template-columns: 0.9fr 0.85fr;
+    gap: 28px;
+    align-items: start;
+    padding: 18px 0;
+  }
+
+  .projects-left {
+    position: relative;
+    min-height: 620px;
+    padding-right: 10px;
+  }
+
+  .projects-right {
+    padding-left: 10px;
+  }
+
+  .side-slot {
+    width: 100%;
+    margin: 6px 0 14px;
+  }
+
+  .side-slot:empty {
+    display: none;
+  }
+
+  .projects-section .card.is-in-slot {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    z-index: 10;
+  }
+
+  .projects-section .card.is-animating {
+    will-change: transform;
+  }
+
+  .collage {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    height: min(560px, 62vh);
+    min-height: 500px;
+    margin-top: 6px;
+    margin-left: 8px;
+    transform-style: preserve-3d;
+  }
+
+  .projects-section .card {
+    position: absolute;
+    width: clamp(240px, 44vw, 420px);
+    min-height: 120px;
+    aspect-ratio: 16 / 10;
+    border-radius: var(--projects-radius-lg);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: var(--projects-paper);
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 1;
+    transform-origin: 20% 20%;
+    transition: transform 220ms ease, box-shadow 60ms ease;
+    outline: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .projects-section .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.5), transparent 45%);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .card__header {
+    padding: 12px 14px 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--projects-ink);
+  }
+
+  .card__body {
+    padding: 10px 14px 14px;
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--projects-ink);
+    opacity: 0.9;
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .projects-section .card:hover {
+    transform: translate3d(0, -6px, 10px) scale(1.01) rotate(var(--rot));
+    outline: none;
+  }
+
+  .projects-section .card.is-active {
+    outline: none;
+  }
+
+  @media (max-width: 980px) {
+    .projects-layout {
+      grid-template-columns: 1fr;
+      max-width: 100%;
+    }
+    .projects-left {
+      border-right: none;
+      padding-right: 0;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+      min-height: 420px;
+      max-width: 100%;
+    }
+    .projects-right {
+      padding-left: 0;
+      max-width: 100%;
+    }
+    .collage {
+      max-width: 100%;
+      height: min(420px, 55vh);
+      min-height: 380px;
+      margin-left: 0;
+    }
+    .projects-section .card {
+      width: min(72vw, 260px);
+      min-height: 100px;
+      aspect-ratio: 16 / 10;
+    }
+    .projects-section .card.is-in-slot {
+      max-width: 100%;
+      width: 100%;
+    }
+    .card__header {
+      font-size: 10px;
+      padding: 10px 12px 4px;
+    }
+    .card__body {
+      font-size: 11px;
+      padding: 8px 12px 10px;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .projects-page {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+    .collage {
+      height: min(380px, 50vh);
+      min-height: 340px;
+    }
+    .projects-section .card {
+      width: min(70vw, 220px);
+      min-height: 90px;
+    }
+    .card__header {
+      font-size: 9px;
+    }
+    .card__body {
+      font-size: 10px;
+    }
+  }
+</style>

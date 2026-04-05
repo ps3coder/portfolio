@@ -1,0 +1,304 @@
+---
+/**
+ * Root layout — Single entry for all pages.
+ * Global styles (reset + theme) are in src/styles/global.css.
+ * Add site-wide meta, fonts, and scripts here.
+ */
+import '../styles/global.css';
+
+const baseUrl = import.meta.env.BASE_URL.endsWith('/')
+	? import.meta.env.BASE_URL
+	: `${import.meta.env.BASE_URL}/`;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href={`${baseUrl}favicon.svg`} media="(prefers-color-scheme: light)" />
+		<link rel="icon" type="image/svg+xml" href={`${baseUrl}favicon-dark.svg`} media="(prefers-color-scheme: dark)" />
+		<link rel="icon" href={`${baseUrl}favicon.ico`} />
+		<meta name="generator" content={Astro.generator} />
+		<!-- Preconnect for faster third-party loads -->
+		<link rel="preconnect" href="https://unpkg.com" />
+		<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+		<link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/geist-sans.css" />
+		<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+		<link href="https://fonts.cdnfonts.com/css/dk-leftover-crayon" rel="stylesheet" />
+		<!-- Single load: Rough Notation (defer so it doesn't block parse) -->
+		<script defer src="https://unpkg.com/rough-notation@0.5.1/lib/rough-notation.iife.js"></script>
+		<title>𝖯𝖺𝗇𝗄𝖺𝗃 𝖲𝗁𝖺𝗋𝗆𝖺</title>
+	</head>
+
+	<body>
+		<slot />
+
+		<!-- Custom scroll indicator -->
+		<nav id="scroll-dots">
+			{Array.from({ length: 60 }).map((_, i) => (
+				<button class="scroll-dot" data-index={i} aria-label={`Scroll to position ${i + 1}`} />
+			))}
+		</nav>
+
+		<!-- Theme segment slider -->
+		<div class="theme-segment-wrap" role="group" aria-label="Theme">
+			<div class="theme-segment-bar" id="theme-segment-bar">
+				{Array.from({ length: 40 }, (_, i) => (
+					<button
+						type="button"
+						class="theme-segment-btn"
+						aria-label={`Theme segment ${i + 1}`}
+						aria-pressed={i === 0}
+						data-index={i}
+					/>
+				))}
+				<div class="theme-segment-indicator" id="theme-segment-indicator" aria-hidden="true"></div>
+			</div>
+		</div>
+	</body>
+</html>
+
+<style>
+	#scroll-dots {
+		position: fixed;
+		right: 6px;
+		top: 50%;
+		transform: translateY(-50%);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 6px;
+		z-index: 1000;
+		background: none;
+		border: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.scroll-dot {
+		width: 4px;
+		height: 4px;
+		border-radius: 100%;
+		background-color: gray;
+		border: none;
+		padding: 0;
+		cursor: pointer;
+		display: block;
+		flex-shrink: 0;
+	}
+
+	.scroll-dot.active {
+		background-color: #f59794;
+	}
+
+	/* Theme segment slider */
+	.theme-segment-wrap {
+		position: fixed;
+		top: clamp(0.75rem, 2vw, 1.25rem);
+		right: clamp(1rem, 6vw, 6.25rem);
+		z-index: 100;
+		max-width: min(350px, 55vw);
+		padding: 0;
+		background: none;
+		border: none;
+		border-radius: 0;
+		box-shadow: none;
+		outline: none;
+	}
+
+	.theme-segment-bar {
+		position: relative;
+		display: flex;
+		align-items: stretch;
+		gap: 2px;
+		width: 190%;
+		height: 24px;
+		padding: 0;
+		background: var(--color-border);
+		overflow: hidden;
+		border: none;
+		border-radius: 0;
+		outline: none;
+	}
+
+	.theme-segment-btn {
+		flex: 1;
+		min-width: 0;
+		padding: 0;
+		border: none;
+		cursor: pointer;
+		background: var(--color-bg);
+		transition: background 0.15s ease;
+	}
+
+	.theme-segment-btn:hover {
+		opacity: 0.9;
+	}
+
+	.theme-segment-btn:focus {
+		outline: none;
+	}
+
+	.theme-segment-indicator {
+		position: absolute;
+		top: 0;
+		height: 100%;
+		pointer-events: none;
+		background: #e8a0a0;
+		transition: left 0.2s ease;
+	}
+
+	@media screen and (max-width: 768px) {
+		.theme-segment-wrap {
+			top: 1.25rem;
+			right: 5.3rem;
+		}
+
+		.theme-segment-bar {
+			height: 28px;
+		}
+	}
+</style>
+
+<script is:inline>
+	const dots = document.querySelectorAll('.scroll-dot');
+	const total = dots.length;
+
+	let targetIndex = 0;
+	let currentIndex = 0;
+	let rafId = null;
+
+	function getTargetIndex() {
+		const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+		const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+		return progress * (total - 1);
+	}
+
+	function setActive(index) {
+		const rounded = Math.round(index);
+		dots.forEach((dot, i) => {
+			const isActive = i === rounded;
+			const dist = Math.abs(i - index);
+			const xOffset = Math.min(0, dist * dist * 1.5 - 4);
+			const scale = isActive ? 2.2 : 1;
+			dot.style.transform = `translateX(${xOffset}px) scale(${scale})`;
+			dot.classList.toggle('active', isActive);
+		});
+	}
+
+	function animate() {
+		const diff = targetIndex - currentIndex;
+		if (Math.abs(diff) < 0.01) {
+			currentIndex = targetIndex;
+			setActive(currentIndex);
+			rafId = null;
+			return;
+		}
+		currentIndex += diff * 0.12;
+		setActive(currentIndex);
+		rafId = requestAnimationFrame(animate);
+	}
+
+	window.addEventListener('scroll', () => {
+		targetIndex = getTargetIndex();
+		if (!rafId) rafId = requestAnimationFrame(animate);
+	}, { passive: true });
+
+	dots.forEach((dot, i) => {
+		dot.addEventListener('click', () => {
+			const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+			const scrollTo = (i / (total - 1)) * maxScroll;
+			window.scrollTo({ top: scrollTo, behavior: 'smooth' });
+		});
+	});
+
+	setActive(0);
+</script>
+
+<script is:inline>
+	(function () {
+		var TOTAL = 40;
+		var THEMES = ['dark', 'dim', 'gray', 'soft', 'light'];
+		function indexToTheme(idx) { return THEMES[Math.min(4, Math.floor(idx / 8))]; }
+
+		var bar = document.getElementById('theme-segment-bar');
+		var indicator = document.getElementById('theme-segment-indicator');
+		if (!bar || !indicator) return;
+
+		var buttons = bar.querySelectorAll('.theme-segment-btn');
+		var gap = 2;
+		var selectedIndex = 0;
+		var dragging = false;
+		var startX = 0;
+		var startIndex = 0;
+
+		function getSegmentWidth() {
+			return buttons.length ? buttons[0].getBoundingClientRect().width : 0;
+		}
+
+		function updateIndicator() {
+			var w = getSegmentWidth();
+			indicator.style.width = w + 'px';
+			indicator.style.left = (selectedIndex * (w + gap)) + 'px';
+		}
+
+		function setIndex(idx) {
+			selectedIndex = Math.max(0, Math.min(TOTAL - 1, idx));
+			buttons.forEach(function (b, i) {
+				b.setAttribute('aria-pressed', i === selectedIndex ? 'true' : 'false');
+			});
+			updateIndicator();
+			document.documentElement.setAttribute('data-theme', indexToTheme(selectedIndex));
+		}
+
+		setIndex(32); // default: light zone
+
+		buttons.forEach(function (btn) {
+			btn.addEventListener('click', function () {
+				setIndex(parseInt(btn.getAttribute('data-index') || '0', 10));
+			});
+		});
+
+		bar.addEventListener('mousedown', function (e) {
+			if (e.button !== 0) return;
+			e.preventDefault();
+			dragging = true;
+			startX = e.clientX;
+			startIndex = selectedIndex;
+		});
+		window.addEventListener('mousemove', function (e) {
+			if (!dragging) return;
+			if ((e.buttons & 1) !== 1) { dragging = false; return; }
+			var w = getSegmentWidth();
+			var dx = e.clientX - startX;
+			var delta = Math.round(dx / (w + gap));
+			setIndex(startIndex + delta);
+		});
+		window.addEventListener('mouseup', function (e) {
+			if (e.button === 0) dragging = false;
+		});
+
+		bar.addEventListener('touchstart', function (e) {
+			if (!e.touches.length) return;
+			dragging = true;
+			startX = e.touches[0].clientX;
+			startIndex = selectedIndex;
+			e.preventDefault();
+		}, { passive: false });
+		window.addEventListener('touchmove', function (e) {
+			if (!dragging || !e.touches.length) return;
+			var w = getSegmentWidth();
+			var dx = e.touches[0].clientX - startX;
+			var delta = Math.round(dx / (w + gap));
+			setIndex(startIndex + delta);
+			e.preventDefault();
+		}, { passive: false });
+		window.addEventListener('touchend', function () { dragging = false; });
+
+		window.addEventListener('resize', updateIndicator);
+	})();
+</script>

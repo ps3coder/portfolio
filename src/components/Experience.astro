@@ -1,0 +1,781 @@
+---
+/**
+ * Experience — Experience | Work tabs; experience table + expandable details (Kindle-like B/W).
+ */
+import { Image } from "astro:assets";
+import qrImage from "../assets/QR_black.png";
+const EXPERIENCES = [
+  {
+    company: "Sahana System Limited",
+    duration: "Jun '24 – Aug '24",
+    role: "Cloud Engineer / DevOps Intern",
+    summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
+    achievements: ["Lorem ipsum dolor sit amet.", "Consectetur adipiscing elit sed do.", "Ut enim ad minim veniam quis."],
+    techStack: ["Python", "Docker", "AWS", "GitHub Actions"],
+    projects: [{ name: "Project 1", url: "#" }, { name: "Project 2", url: "#" }],
+    certificate: { name: "View Certificate", url: "#" },
+  },
+  {
+    company: "SNB Innovations LLP.",
+    duration: "May '25 – Sep '25",
+    role: "Full Stack Developer Intern",
+    summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit.",
+    achievements: ["Lorem ipsum dolor sit amet.", "Duis aute irure dolor.", "Excepteur sint occaecat cupidatat."],
+    techStack: ["React", "Node.js", "PostgreSQL", "REST"],
+    projects: [{ name: "Project A", url: "#" }, { name: "Project B", url: "#" }],
+    certificate: { name: "View Certificate", url: "#" },
+  },
+  {
+    company: "Size Metrics Design & Engineering",
+    duration: "Nov '25 – Working",
+    role: "Jr. Python Developer",
+    summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam.",
+    achievements: ["Lorem ipsum dolor sit amet.", "Quis nostrud exercitation ullamco.", "Laboris nisi ut aliquip ex ea."],
+    techStack: ["Python", "Django", "SQL", "Git"],
+    projects: [{ name: "Project X", url: "#" }],
+    certificate: { name: "View Certificate", url: "#" },
+  },
+];
+---
+
+<section class="experience-section" id="experience" aria-label="Experience">
+  <div class="experience-page">
+    <div class="experience-tabs" role="tablist" aria-label="Experience or Work">
+      <button type="button" class="experience-tab-btn is-active" role="tab" aria-selected="true" data-view="experience">Experience</button>
+      <span class="experience-tabs-sep" aria-hidden="true">|</span>
+      <button type="button" class="experience-tab-btn" role="tab" aria-selected="false" data-view="work">Work</button>
+    </div>
+    <div class="experience-content" data-active-view="experience">
+      <div class="experience-view" id="experienceView" aria-hidden="false">
+        <div class="experience-table" role="table" aria-label="Work experience">
+          {EXPERIENCES.map((exp, i) => (
+            <div class="experience-row-wrap" data-index={i}>
+              <div class="experience-row" role="row">
+                <div class="experience-row__company" role="cell">{exp.company}</div>
+                <div class="experience-row__meta" role="cell">
+                  <span class="experience-row__duration">({exp.duration})</span>
+                  <span class="experience-row__role">{exp.role}</span>
+                </div>
+                <button type="button" class="experience-row__expand" aria-label="Expand details" aria-expanded="false" title="Expand" data-detail-id={`experience-detail-${i}`}><span class="experience-row__expand-icon" aria-hidden="true">+</span></button>
+              </div>
+              <div class="experience-detail" id={`experience-detail-${i}`} role="region" aria-label={`Details for ${exp.company}`} aria-hidden="true">
+                <div class="experience-detail__inner">
+                  <p class="experience-detail__label">Role Summary</p>
+                  <p class="experience-detail__summary">{exp.summary}</p>
+                  <p class="experience-detail__label">Key Achievements</p>
+                  <ul class="experience-detail__list">
+                    {exp.achievements.map((a) => <li>{a}</li>)}
+                  </ul>
+                  <p class="experience-detail__label">Tech Stack</p>
+                  <p class="experience-detail__tech">{exp.techStack.join(" | ")}</p>
+                  <p class="experience-detail__label">Projects</p>
+                  <p class="experience-detail__links">
+                    {exp.projects.map((p) => (
+                      <a href={p.url} class="experience-detail__link">{p.name}</a>
+                    ))}
+                  </p>
+                  <p class="experience-detail__label">Certificates</p>
+                  <p class="experience-detail__links">
+                    <a href={exp.certificate.url} class="experience-detail__link">{exp.certificate.name}</a>
+                  </p>
+                  <Image src={qrImage} width={80} height={80} alt="QR code" class="experience-detail__qr" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="work-view" id="workView" aria-hidden="true" hidden>
+        <p class="work-empty">Nothing to show for now.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Expand/collapse experience details (Kindle-like panel) -->
+<script is:inline>
+  (function () {
+    document.querySelectorAll(".experience-row__expand").forEach(function (btn) {
+      var id = btn.getAttribute("data-detail-id");
+      var panel = id ? document.getElementById(id) : null;
+      var wrap = btn.closest(".experience-row-wrap");
+      if (!panel || !wrap) return;
+      btn.addEventListener("click", function () {
+        var isOpen = wrap.classList.contains("is-expanded");
+        wrap.classList.toggle("is-expanded", !isOpen);
+        btn.setAttribute("aria-expanded", !isOpen ? "true" : "false");
+        panel.setAttribute("aria-hidden", isOpen ? "true" : "false");
+      });
+    });
+  })();
+</script>
+
+<!-- Tab switching: Experience | Work (Work shows "Nothing to show for now.") -->
+<script is:inline>
+  (function () {
+    var content = document.querySelector(".experience-content");
+    var experienceView = document.getElementById("experienceView");
+    var workView = document.getElementById("workView");
+    var tabs = document.querySelectorAll(".experience-section .experience-tab-btn");
+    if (!content || !experienceView || !workView || !tabs.length) return;
+
+    tabs.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var view = btn.getAttribute("data-view");
+        if (!view) return;
+        content.setAttribute("data-active-view", view);
+        if (view === "experience") {
+          experienceView.hidden = false;
+          experienceView.setAttribute("aria-hidden", "false");
+          workView.hidden = true;
+          workView.setAttribute("aria-hidden", "true");
+        } else {
+          workView.hidden = false;
+          workView.setAttribute("aria-hidden", "false");
+          experienceView.hidden = true;
+          experienceView.setAttribute("aria-hidden", "true");
+        }
+        tabs.forEach(function (t) {
+          t.classList.toggle("is-active", t === btn);
+          t.setAttribute("aria-selected", t === btn ? "true" : "false");
+        });
+      });
+    });
+  })();
+</script>
+
+<!-- Same hover effect as Projects/Skills: Rough Notation box on tab buttons -->
+<script is:inline>
+  (function () {
+    var tabs = document.querySelectorAll(".experience-section .experience-tab-btn");
+    if (!tabs.length) return;
+
+    var opts = { type: "box", color: "gray", animate: true, strokeWidth: 1, duration: 450 };
+    var isHover = window.matchMedia("(hover: hover)").matches;
+
+    function attachRoughNotation(annotate) {
+      tabs.forEach(function (btn) {
+        var annotation = null;
+        if (isHover) {
+          btn.addEventListener("mouseenter", function () {
+            if (annotation) annotation.hide();
+            annotation = annotate(btn, opts);
+            annotation.show();
+          });
+          btn.addEventListener("mouseleave", function () {
+            if (annotation) { annotation.hide(); annotation = null; }
+          });
+        } else {
+          btn.addEventListener("click", function () {
+            if (annotation) annotation.hide();
+            annotation = annotate(btn, opts);
+            annotation.show();
+            setTimeout(function () {
+              if (annotation) { annotation.hide(); annotation = null; }
+            }, opts.duration + 50);
+          });
+        }
+      });
+    }
+
+    function tryAttach() {
+      if (window.RoughNotation && window.RoughNotation.annotate) {
+        attachRoughNotation(window.RoughNotation.annotate);
+        return true;
+      }
+      return false;
+    }
+    if (!tryAttach()) window.addEventListener("load", tryAttach);
+  })();
+</script>
+
+<!-- Animated hand-drawn underline on hover for detail links (Projects, Certificates) -->
+<script is:inline>
+  (function () {
+    var opts = { type: "underline", color: "gray", animate: true, strokeWidth: 1, duration: 450 };
+    var isHover = window.matchMedia("(hover: hover)").matches;
+
+    function attachUnderlineNotation(annotate) {
+      var links = document.querySelectorAll(".experience-section .experience-detail__link");
+      links.forEach(function (link) {
+        var annotation = null;
+        if (isHover) {
+          link.addEventListener("mouseenter", function () {
+            if (annotation) annotation.hide();
+            annotation = annotate(link, opts);
+            annotation.show();
+          });
+          link.addEventListener("mouseleave", function () {
+            if (annotation) { annotation.hide(); annotation = null; }
+          });
+        } else {
+          link.addEventListener("click", function () {
+            if (annotation) annotation.hide();
+            annotation = annotate(link, opts);
+            annotation.show();
+            setTimeout(function () {
+              if (annotation) { annotation.hide(); annotation = null; }
+            }, opts.duration + 50);
+          });
+        }
+      });
+    }
+
+    function initWhenReady() {
+      var annotate = window.RoughNotation && window.RoughNotation.annotate;
+      if (annotate) attachUnderlineNotation(annotate);
+      else window.addEventListener("load", function () {
+        var a = window.RoughNotation && window.RoughNotation.annotate;
+        if (a) attachUnderlineNotation(a);
+      });
+    }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initWhenReady);
+    else initWhenReady();
+  })();
+</script>
+
+<!-- Drawing: default SVG + canvas overlay; draw, eraser, clear, save SVG/PNG. We will get back to this soon. -->
+<!--
+<script is:inline>
+  (function () {
+    var canvas = document.getElementById("experienceDrawCanvas");
+    var wrap = document.querySelector(".experience-draw-wrap");
+    if (!canvas || !wrap) return;
+
+    var ctx = canvas.getContext("2d");
+    var paths = [];
+    var currentPath = null;
+    var currentTool = "draw";
+    var isDrawing = false;
+    var strokeColor = "#000000";
+    var backgroundColor = "#ffffff";
+    var strokeWidth = 2;
+    var eraserWidth = 24;
+
+    function fillBackground() {
+      ctx.fillStyle = backgroundColor;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    fillBackground();
+
+    function getPos(e) {
+      var rect = canvas.getBoundingClientRect();
+      var scaleX = canvas.width / rect.width;
+      var scaleY = canvas.height / rect.height;
+      return {
+        x: (e.clientX - rect.left) * scaleX,
+        y: (e.clientY - rect.top) * scaleY
+      };
+    }
+
+    function redraw() {
+      fillBackground();
+      paths.forEach(function (p) {
+        if (p.points.length < 2) return;
+        if (p.tool === "eraser") {
+          ctx.globalCompositeOperation = "source-over";
+          ctx.strokeStyle = backgroundColor;
+          ctx.lineWidth = eraserWidth;
+          ctx.lineCap = "round";
+        } else {
+          ctx.globalCompositeOperation = "source-over";
+          ctx.strokeStyle = p.color || strokeColor;
+          ctx.lineWidth = p.width || strokeWidth;
+          ctx.lineCap = "round";
+        }
+        ctx.beginPath();
+        ctx.moveTo(p.points[0].x, p.points[0].y);
+        for (var i = 1; i < p.points.length; i++) {
+          ctx.lineTo(p.points[i].x, p.points[i].y);
+        }
+        ctx.stroke();
+      });
+      ctx.globalCompositeOperation = "source-over";
+    }
+
+    function startPath(p) {
+      currentPath = { tool: currentTool, color: strokeColor, width: strokeWidth, points: [p] };
+      paths.push(currentPath);
+    }
+
+    function addPoint(p) {
+      if (!currentPath) return;
+      currentPath.points.push(p);
+      if (currentPath.tool === "eraser") {
+        ctx.globalCompositeOperation = "source-over";
+        ctx.strokeStyle = backgroundColor;
+        ctx.lineWidth = eraserWidth;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        if (currentPath.points.length >= 2) {
+          var last = currentPath.points[currentPath.points.length - 2];
+          ctx.moveTo(last.x, last.y);
+          ctx.lineTo(p.x, p.y);
+        }
+        ctx.stroke();
+      } else {
+        ctx.strokeStyle = strokeColor;
+        ctx.lineWidth = strokeWidth;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        if (currentPath.points.length >= 2) {
+          var last = currentPath.points[currentPath.points.length - 2];
+          ctx.moveTo(last.x, last.y);
+          ctx.lineTo(p.x, p.y);
+        }
+        ctx.stroke();
+      }
+    }
+
+    function endPath() {
+      currentPath = null;
+    }
+
+    function onPointerDown(e) {
+      e.preventDefault();
+      if (currentTool === "clear") return;
+      var p = getPos(e);
+      isDrawing = true;
+      startPath(p);
+      if (currentPath.tool === "eraser") {
+        ctx.globalCompositeOperation = "source-over";
+        ctx.fillStyle = backgroundColor;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, eraserWidth / 2, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        ctx.fillStyle = strokeColor;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, strokeWidth / 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function onPointerMove(e) {
+      if (!isDrawing || !currentPath) return;
+      e.preventDefault();
+      addPoint(getPos(e));
+    }
+
+    function onPointerUp(e) {
+      if (!isDrawing) return;
+      e.preventDefault();
+      endPath();
+      isDrawing = false;
+    }
+
+    canvas.addEventListener("mousedown", onPointerDown);
+    canvas.addEventListener("mousemove", onPointerMove);
+    canvas.addEventListener("mouseup", onPointerUp);
+    canvas.addEventListener("mouseleave", onPointerUp);
+    canvas.addEventListener("dblclick", function (e) {
+      e.preventDefault();
+      endPath();
+      isDrawing = false;
+    });
+
+    wrap.querySelectorAll(".experience-draw-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var tool = this.getAttribute("data-tool");
+        if (tool === "clear") {
+          paths = [];
+          redraw();
+          return;
+        }
+        if (tool === "png") {
+          var a = document.createElement("a");
+          a.download = "experience-drawing.png";
+          a.href = canvas.toDataURL("image/png");
+          a.click();
+          return;
+        }
+        if (tool === "svg") {
+          var w = canvas.width, h = canvas.height;
+          var svg = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '">'];
+          paths.forEach(function (p) {
+            if (p.points.length < 2) return;
+            var d = "M " + p.points[0].x + " " + p.points[0].y;
+            for (var i = 1; i < p.points.length; i++) {
+              d += " L " + p.points[i].x + " " + p.points[i].y;
+            }
+            var stroke = p.tool === "eraser" ? "none" : (p.color || strokeColor);
+            var sw = p.tool === "eraser" ? 0 : (p.width || strokeWidth);
+            if (p.tool !== "eraser") {
+              svg.push('<path fill="none" stroke="' + stroke + '" stroke-width="' + sw + '" stroke-linecap="round" d="' + d + '"/>');
+            }
+          });
+          svg.push("</svg>");
+          var a = document.createElement("a");
+          a.download = "experience-drawing.svg";
+          a.href = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg.join(""));
+          a.click();
+          return;
+        }
+        currentTool = tool;
+        wrap.querySelectorAll(".experience-draw-btn").forEach(function (b) {
+          b.classList.toggle("is-active", b === btn && (tool === "draw" || tool === "eraser"));
+        });
+        var toolNameEl = document.getElementById("experienceToolName");
+        if (toolNameEl) toolNameEl.textContent = tool === "draw" ? "Freeform Lines" : tool === "eraser" ? "Eraser" : toolNameEl.textContent;
+      });
+    });
+  })();
+</script>
+-->
+
+<style>
+  .experience-section {
+    background: var(--color-paper);
+    padding-top: clamp(2.5rem, 6vw, 4rem);
+    padding-bottom: 5rem;
+    min-height: 0;
+    font-family: "PP Neue Montreal", "NeueMontreal-Regular", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    letter-spacing: 0.2px;
+    color: var(--color-ink);
+  }
+
+  .experience-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 18px 18px 42px;
+    overflow-x: hidden;
+  }
+
+  .experience-tabs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 5rem;
+    flex-wrap: wrap;
+  }
+
+  .experience-tab-btn {
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: var(--color-ink);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 0.25rem;
+  }
+
+  .experience-tab-btn.is-active {
+    font-weight: 700;
+  }
+
+  .experience-tabs-sep {
+    color: var(--color-muted);
+    font-size: 0.875rem;
+    font-family: inherit;
+    user-select: none;
+  }
+
+  .experience-content {
+    margin-top: 1rem;
+  }
+
+  /* Tab content visibility */
+  .experience-content[data-active-view="work"] .experience-view {
+    display: none !important;
+  }
+
+  .experience-content[data-active-view="experience"] .work-view {
+    display: none !important;
+  }
+
+  .experience-content[data-active-view="work"] .work-view {
+    display: flex;
+  }
+
+  .work-view {
+    min-height: 200px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .work-empty {
+    margin: 0;
+    font-size: 0.9375rem;
+    color: var(--color-muted, #666);
+  }
+
+  .experience-view {
+    width: 100%;
+    max-width: 60rem;
+    margin: 0 auto;
+    font-family: "PP Neue Montreal", "NeueMontreal-Regular", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+
+  .experience-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .experience-row-wrap {
+    border-bottom: 2px solid var(--color-line, #bbb);
+  }
+
+  .experience-row-wrap:last-child {
+    border-bottom: none;
+  }
+
+  .experience-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 1rem 1.5rem;
+    align-items: center;
+    padding: 1rem 0;
+  }
+
+  .experience-row__company {
+    font-weight: 800;
+    font-size: clamp(1.125rem, 2.8vw, 1.4375rem);
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+
+  .experience-row__meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0.2rem;
+    text-align: right;
+  }
+
+  .experience-row__duration {
+    font-size: 0.8125rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    color: var(--color-muted, #666);
+  }
+
+  .experience-row__role {
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--color-ink);
+  }
+
+  .experience-row__expand {
+    font-family: "PP Neue Montreal", "NeueMontreal-Regular", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--color-ink);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.35rem;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+
+  .experience-row__expand:hover {
+    color: var(--color-muted, #555);
+  }
+
+  .experience-row__expand:hover .experience-row__expand-icon {
+    transform: rotate(45deg);
+  }
+
+  .experience-row-wrap.is-expanded .experience-row__expand-icon {
+    transform: rotate(45deg);
+  }
+
+  .experience-row__expand-icon {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+
+  /* Expandable detail panel — Kindle-like B/W */
+  .experience-detail {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.35s ease, opacity 0.25s ease;
+  }
+
+  .experience-row-wrap.is-expanded .experience-detail {
+    max-height: 1200px;
+    opacity: 1;
+  }
+
+  .experience-detail__inner {
+    position: relative;
+    padding: 0 0 1.25rem 1.75rem;
+    margin-left: 0;
+    border-left: 2px solid var(--color-line, #ddd);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    font-family: inherit;
+  }
+
+  .experience-row-wrap:last-child .experience-detail__inner {
+    border-bottom: 2px solid var(--color-line, #ddd);
+  }
+
+  .experience-detail__qr {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  .experience-detail__label {
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-muted, #555);
+    margin: 1rem 0 0.35rem 0;
+  }
+
+  .experience-detail__label:first-child {
+    margin-top: 0.5rem;
+  }
+
+  .experience-detail__summary {
+    margin: 0;
+    color: var(--color-ink);
+  }
+
+  .experience-detail__list {
+    margin: 0 0 0 1rem;
+    padding: 0;
+    list-style: disc;
+  }
+
+  .experience-detail__list li {
+    margin: 0.2rem 0;
+  }
+
+  .experience-detail__tech {
+    margin: 0;
+    color: var(--color-ink);
+  }
+
+  .experience-detail__links {
+    margin: 0;
+  }
+
+  .experience-detail__link {
+    display: inline-block;
+    color: var(--color-ink);
+    text-decoration: none;
+    margin-right: 1rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .experience-detail__link:hover {
+    color: var(--color-ink);
+  }
+
+  @media (max-width: 600px) {
+    .experience-row {
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto auto;
+      gap: 0.5rem 1rem;
+      padding: 0.875rem 0;
+    }
+
+    .experience-row__company {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .experience-row__meta {
+      grid-column: 1;
+      grid-row: 2;
+      align-items: flex-start;
+    }
+
+    .experience-row__expand {
+      grid-column: 2;
+      grid-row: 1 / -1;
+      align-self: center;
+    }
+  }
+
+  /* We will get back to this soon. Drawing canvas styles commented out for now.
+  .experience-draw-wrap {
+    border: 1px solid var(--color-line, #ddd);
+    border-radius: 4px;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .experience-draw-toolbar {
+    padding: 0.5rem 0.75rem;
+    background: #ffffff;
+    color: #111;
+    font-size: 0.8125rem;
+  }
+
+  .experience-draw-tool-label {
+    font-weight: 600;
+  }
+
+  .experience-draw-hint {
+    margin: 0.25rem 0 0.5rem;
+    color: #444;
+    font-size: 0.75rem;
+  }
+
+  .experience-draw-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .experience-draw-btn {
+    font-family: inherit;
+    font-size: 0.8125rem;
+    padding: 0.35rem 0.6rem;
+    background: #f5f5f5;
+    color: #111;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .experience-draw-btn:hover {
+    background: #eee;
+  }
+
+  .experience-draw-btn.is-active {
+    background: #e0e0e0;
+    border-color: #999;
+  }
+
+  .experience-draw-area {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 1199 / 799;
+    max-width: 100%;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .experience-draw-canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+    touch-action: none;
+  }
+  */
+</style>

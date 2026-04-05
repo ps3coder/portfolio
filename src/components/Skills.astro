@@ -1,0 +1,521 @@
+---
+/**
+ * Skills — Overview (Mermaid gitGraph) + Details tab.
+ * Uses global --color-bg, --color-ink, --color-muted from theme.css.
+ */
+---
+
+<section class="skills-section" id="skills" aria-label="Skills">
+  <div class="skills-page">
+      <div class="skills-tabs" role="tablist" aria-label="Skills view">
+        <button type="button" class="skills-tab-btn is-active" role="tab" aria-selected="true" data-view="view-1">Overview</button>
+        <span class="skills-tabs-sep" aria-hidden="true">|</span>
+        <button type="button" class="skills-tab-btn" role="tab" aria-selected="false" data-view="view-2">Details</button>
+      </div>
+    <div class="skills-content" data-active-view="view-1">
+      <div class="skills-view skills-view-1" id="skillsView1" aria-hidden="false">
+    <!-- Mobile: vertical (TB) -->
+    <div class="mermaid mermaid-mobile">
+gitGraph TB:
+  commit id: "Backend"
+  branch Services
+  commit id: "Python"
+  commit id: "Django, DRF, FastAPI"
+  commit id: "Node.js"
+  commit id: "REST APIs"
+  commit id: "Real-time APIs SSE"
+  checkout main
+  branch API_Design
+  commit id: "RESTful Services"
+  commit id: "Auth and Authorization"
+  commit id: "Rate Limiting, Validation"
+  checkout main
+  branch Integrations
+  commit id: "AI Services, LLM APIs"
+  commit id: "Third-Party API Integration"
+  commit id: "Webhooks, External Services"
+  checkout main
+  branch Auth_Identity
+  commit id: "JWT-based Auth"
+  commit id: "OAuth 2.0, Social Login"
+  commit id: "RBAC"
+  checkout main
+  merge Services
+  merge API_Design
+  merge Integrations
+  merge Auth_Identity
+  commit id: "Data and Storage"
+  branch Data_Storage
+  commit id: "PostgreSQL, MySQL"
+  commit id: "MongoDB, DynamoDB"
+  commit id: "Redis Caching"
+  checkout main
+  branch Distributed
+  commit id: "Service-Oriented Architecture"
+  commit id: "API Gateway Pattern"
+  commit id: "Microservices"
+  checkout main
+  branch Cloud_DevOps
+  commit id: "AWS EC2, Lambda, S3, RDS, IAM, VPC"
+  commit id: "Docker"
+  commit id: "Linux Deployment"
+  checkout main
+  merge Data_Storage
+  merge Distributed
+  merge Cloud_DevOps
+    </div>
+    <!-- PC: landscape (LR) -->
+    <div class="mermaid mermaid-pc">
+gitGraph LR:
+  commit id: "Backend"
+  branch Services
+  commit id: "Python"
+  commit id: "Django"
+  commit id: "DRF"
+  commit id: "FastAPI"
+  commit id: "Node.js"
+  commit id: "REST APIs"
+  commit id: "GraphQL"
+  commit id: "SSE"
+  checkout main
+  branch API_Design
+  commit id: "RESTful"
+  commit id: " Auth"
+  commit id: "Rate Limiting"
+  commit id: "Caching"
+  commit id: "Validation"
+  commit id: "logging"
+  commit id: "Docs"
+  checkout main
+  branch Integrations
+  commit id: "AI Services"
+  commit id: "LLM APIs"
+  commit id: "Third-Party API Integration"
+  commit id: "Webhooks, External Services"
+  checkout main
+  branch Auth_Identity
+  commit id: "JWT-based Auth"
+  commit id: "OAuth 2.0, Social Login"
+  commit id: "RBAC"
+  checkout main
+  merge Services
+  merge API_Design
+  merge Integrations
+  merge Auth_Identity
+  commit id: "Data and Storage"
+  branch Data_Storage
+  commit id: "PostgreSQL, MySQL"
+  commit id: "MongoDB, DynamoDB"
+  commit id: "Redis Caching"
+  checkout main
+  branch Distributed
+  commit id: "Service-Oriented Architecture"
+  commit id: "API Gateway Pattern"
+  commit id: "Microservices"
+  checkout main
+  branch Cloud_DevOps
+  commit id: "AWS EC2, Lambda, S3, RDS, IAM, VPC"
+  commit id: "Docker"
+  commit id: "Linux Deployment"
+  checkout main
+  merge Data_Storage
+  merge Distributed
+  merge Cloud_DevOps
+    </div>
+      </div>
+      <div class="skills-view skills-view-2" id="skillsView2" aria-hidden="true" hidden>
+        <p class="skills-empty">Nothing to show here for now.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Step 2: Lazy-load Mermaid only when Skills section is in view (avoids competing with hero video) -->
+<script is:inline>
+  (function () {
+    var MERMAID_URL = "https://cdn.jsdelivr.net/npm/mermaid@10.9.5/dist/mermaid.min.js";
+    var loaded = false;
+    var loading = false;
+
+    function runMermaidRender() {
+      var mermaid = window.mermaid;
+      if (!mermaid) return false;
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: "neutral",
+        securityLevel: "loose",
+        logLevel: "debug",
+        themeVariables: {
+          primaryBorderColor: "#333",
+          lineColor: "#333",
+          primaryTextColor: "#111",
+          commitLabelColor: "#111",
+          commitLabelBackground: "#fafafa",
+          tagLabelColor: "#111",
+          branchLabelColor: "#111",
+        },
+        gitGraph: {
+          showBranches: true,
+          showCommitLabel: true,
+          rotateCommitLabel: true,
+        },
+      });
+      var nodes = document.querySelectorAll(".skills-section .mermaid");
+      if (nodes.length) mermaid.run({ nodes: Array.from(nodes), suppressErrors: true });
+      return true;
+    }
+
+    function loadMermaidAndRender() {
+      if (loaded) return;
+      if (loading) return;
+      loading = true;
+      var script = document.createElement("script");
+      script.src = MERMAID_URL;
+      script.onload = function () {
+        loaded = true;
+        if (!runMermaidRender()) {
+          var check = setInterval(function () {
+            if (runMermaidRender()) clearInterval(check);
+          }, 50);
+        }
+      };
+      document.head.appendChild(script);
+    }
+
+    var section = document.getElementById("skills") || document.querySelector(".skills-section");
+    if (!section) {
+      loadMermaidAndRender();
+      return;
+    }
+    var io = new IntersectionObserver(
+      function (entries) {
+        var e = entries[0];
+        if (e && e.isIntersecting) {
+          loadMermaidAndRender();
+          io.disconnect();
+        }
+      },
+      { rootMargin: "100px 0px", threshold: 0 }
+    );
+    io.observe(section);
+  })();
+</script>
+<!-- All commits: red dots + click -> console.log. Branch labels: click -> console.log. -->
+<script is:inline>
+  (function () {
+    var BRANCH_LABELS = ["main", "Services", "API_Design", "Integrations", "Auth_Identity", "Data_Storage", "Distributed", "Cloud_DevOps"];
+
+    function getTextContent(el) {
+      return (el.textContent || "").trim().replace(/\s+/g, " ");
+    }
+
+    function findCircleForLabel(svg, textEl) {
+      try {
+        var bbox = textEl.getBBox();
+        var tx = bbox.x + bbox.width / 2;
+        var ty = bbox.y + bbox.height / 2;
+        var circles = svg.querySelectorAll("circle");
+        var best = null;
+        var bestDist = Infinity;
+        for (var i = 0; i < circles.length; i++) {
+          var c = circles[i];
+          var r = parseFloat(c.getAttribute("r")) || 0;
+          if (r < 2 || r > 25) continue;
+          var cx = parseFloat(c.getAttribute("cx")) || 0;
+          var cy = parseFloat(c.getAttribute("cy")) || 0;
+          var dist = (cx - tx) * (cx - tx) + (cy - ty) * (cy - ty);
+          if (dist < bestDist) {
+            bestDist = dist;
+            best = c;
+          }
+        }
+        return best;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function attachRedDotsAndClick() {
+      var mermaidSvgs = document.querySelectorAll(".skills-section .mermaid svg");
+      mermaidSvgs.forEach(function (svg) {
+        var usedCircles = new Set();
+        var texts = svg.querySelectorAll("text");
+        texts.forEach(function (textEl) {
+          var label = getTextContent(textEl);
+          if (!label) return;
+          if (BRANCH_LABELS.indexOf(label) !== -1) {
+            var g = textEl.closest("g");
+            var target = g || textEl;
+            target.style.cursor = "pointer";
+            (function (branchName) {
+              target.addEventListener("click", function () {
+                console.log("Branch clicked:", branchName);
+              });
+            })(label);
+            return;
+          }
+          var circle = findCircleForLabel(svg, textEl);
+          if (!circle || usedCircles.has(circle)) return;
+          usedCircles.add(circle);
+          circle.setAttribute("fill", "red");
+          circle.setAttribute("stroke", "red");
+          circle.style.cursor = "pointer";
+          (function (commitLabel) {
+            circle.addEventListener("click", function () {
+              console.log("Commit clicked:", commitLabel);
+            });
+          })(label);
+          var g = textEl.closest("g");
+          if (g) g.style.cursor = "pointer";
+        });
+      });
+    }
+
+    function waitForMermaidThenRun() {
+      var svg = document.querySelector(".skills-section .mermaid svg");
+      if (svg && svg.querySelector("circle")) {
+        attachRedDotsAndClick();
+        return true;
+      }
+      return false;
+    }
+
+    if (waitForMermaidThenRun()) return;
+    var tries = 0;
+    var t = setInterval(function () {
+      if (waitForMermaidThenRun() || ++tries > 120) clearInterval(t);
+    }, 100);
+  })();
+</script>
+<!-- Tab switch Overview | Details + Rough Notation on tab buttons -->
+<script is:inline>
+  (function () {
+    var content = document.querySelector(".skills-content");
+    var view1 = document.getElementById("skillsView1");
+    var view2 = document.getElementById("skillsView2");
+    var tabs = document.querySelectorAll(".skills-tab-btn");
+    if (!content || !view1 || !view2 || !tabs.length) return;
+
+    tabs.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var view = btn.getAttribute("data-view");
+        if (!view) return;
+        content.setAttribute("data-active-view", view);
+        if (view === "view-1") {
+          view1.hidden = false;
+          view1.setAttribute("aria-hidden", "false");
+          view2.hidden = true;
+          view2.setAttribute("aria-hidden", "true");
+        } else {
+          view2.hidden = false;
+          view2.setAttribute("aria-hidden", "false");
+          view1.hidden = true;
+          view1.setAttribute("aria-hidden", "true");
+        }
+        tabs.forEach(function (t) {
+          t.classList.toggle("is-active", t === btn);
+          t.setAttribute("aria-selected", t === btn ? "true" : "false");
+        });
+      });
+    });
+
+    var opts = { type: "box", color: "gray", animate: true, strokeWidth: 1, duration: 450 };
+    var isHover = window.matchMedia("(hover: hover)").matches;
+
+    function attachRoughNotation(annotate) {
+      tabs.forEach(function (btn) {
+        var annotation = null;
+        if (isHover) {
+          btn.addEventListener("mouseenter", function () {
+            if (annotation) annotation.hide();
+            annotation = annotate(btn, opts);
+            annotation.show();
+          });
+          btn.addEventListener("mouseleave", function () {
+            if (annotation) { annotation.hide(); annotation = null; }
+          });
+        } else {
+          btn.addEventListener("click", function (e) {
+            if (annotation) annotation.hide();
+            annotation = annotate(btn, opts);
+            annotation.show();
+            setTimeout(function () {
+              if (annotation) { annotation.hide(); annotation = null; }
+            }, opts.duration + 50);
+          });
+        }
+      });
+    }
+
+    function tryAttach() {
+      if (window.RoughNotation && window.RoughNotation.annotate) {
+        attachRoughNotation(window.RoughNotation.annotate);
+        return true;
+      }
+      return false;
+    }
+    if (!tryAttach()) window.addEventListener("load", tryAttach);
+  })();
+</script>
+
+<style>
+  /* Uses central theme; tabs aligned with Projects section */
+  .skills-section {
+    background: var(--color-paper);
+    padding-top: clamp(2.5rem, 6vw, 4rem);
+    padding-bottom: 4rem;
+    min-height: 0;
+    font-family: "Courier Prime", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    letter-spacing: 0.2px;
+    color: var(--color-ink);
+  }
+
+  .skills-page {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 18px 18px 42px;
+    overflow-x: hidden;
+    overflow-y: visible;
+  }
+
+  .skills-tabs {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom:5rem;
+    flex-wrap: wrap;
+  }
+
+  .skills-tab-btn {
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: var(--color-ink);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 0.25rem;
+  }
+
+  .skills-tab-btn.is-active {
+    font-weight: 700;
+  }
+
+  .skills-tabs-sep {
+    color: var(--color-muted);
+    font-size: 0.875rem;
+    font-family: inherit;
+    user-select: none;
+  }
+
+  .skills-content[data-active-view="view-1"] .skills-view-2 {
+    display: none !important;
+  }
+
+  .skills-content[data-active-view="view-2"] .skills-view-1 {
+    display: none !important;
+  }
+
+  .skills-view-2 {
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .skills-empty {
+    margin: 0;
+    font-size: 0.9375rem;
+    color: var(--color-muted);
+  }
+
+  .skills-section :global(.mermaid) {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    
+  }
+
+  /* Mobile: show vertical (TB) diagram only */
+  .skills-section :global(.mermaid-pc) {
+    display: none !important;
+  }
+
+  .skills-section :global(.mermaid-mobile) {
+    display: flex;
+  }
+
+  /* Fit viewport: scale diagram to container, no horizontal scroll */
+  .skills-section :global(.mermaid svg) {
+    max-width: 100%;
+    height: auto;
+    font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Menlo, Monaco, 'Courier New', monospace;
+  }
+
+  /* PC: landscape (LR) diagram only, full height so no vertical scrollbar */
+  @media (min-width: 769px) {
+    .skills-section :global(.mermaid-mobile) {
+      display: none !important;
+    }
+
+    .skills-section :global(.mermaid-pc) {
+      display: flex !important;
+    }
+
+    .skills-section {
+      min-height: auto;
+    }
+
+    .skills-page {
+      overflow-x: auto;
+      overflow-y: visible;
+    }
+
+    .skills-section :global(.mermaid) {
+      min-width: min(1000px, 88vw);
+    }
+
+    .skills-section :global(.mermaid svg) {
+      min-width: 900px;
+      max-width: none;
+      width: auto;
+      height: auto;
+    }
+  }
+
+  .skills-section :global(.mermaid svg path),
+  .skills-section :global(.mermaid svg line) {
+    stroke-width: 1.5;
+    stroke: #333;
+  }
+
+  .skills-section :global(.mermaid svg .branch-label),
+  .skills-section :global(.mermaid svg .commit-label) {
+    font-size: 11px;
+    fill: #111;
+  }
+
+  /* More gap/breathing room around commit labels */
+  .skills-section :global(.mermaid svg .commit-label) {
+    font-size: 10px;
+    letter-spacing: 0.02em;
+  }
+
+  .skills-section :global(.mermaid svg .node) {
+    stroke-width: 1.5;
+  }
+
+  @media (max-width: 640px) {
+    .skills-page {
+      padding: 18px 18px 42px;
+    }
+
+    .skills-section :global(.mermaid svg .branch-label),
+    .skills-section :global(.mermaid svg .commit-label) {
+      font-size: 9px;
+    }
+  }
+</style>

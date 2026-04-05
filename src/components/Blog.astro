@@ -1,0 +1,109 @@
+---
+/**
+ * Blog — Blogs | Open-Source tabs (same UI as Experience/Skills). Content TBD.
+ */
+---
+
+<section class="blog-section" id="blog" aria-label="Blog">
+  <div class="blog-page">
+    <div class="blog-tabs" role="tablist" aria-label="Blogs or Open-Source">
+      <button type="button" class="blog-tab-btn is-active" role="tab" aria-selected="true" data-view="blogs">Blogs</button>
+      <span class="blog-tabs-sep" aria-hidden="true">|</span>
+      <button type="button" class="blog-tab-btn" role="tab" aria-selected="false" data-view="open-source">Open-Source</button>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    var tabs = document.querySelectorAll(".blog-section .blog-tab-btn");
+    if (!tabs.length) return;
+
+    var opts = { type: "box", color: "gray", animate: true, strokeWidth: 1, duration: 450 };
+    var isHover = window.matchMedia("(hover: hover)").matches;
+
+    function attachRoughNotation(annotate) {
+      tabs.forEach(function (btn) {
+        var annotation = null;
+        if (isHover) {
+          btn.addEventListener("mouseenter", function () {
+            if (annotation) annotation.hide();
+            annotation = annotate(btn, opts);
+            annotation.show();
+          });
+          btn.addEventListener("mouseleave", function () {
+            if (annotation) { annotation.hide(); annotation = null; }
+          });
+        } else {
+          btn.addEventListener("click", function () {
+            if (annotation) annotation.hide();
+            annotation = annotate(btn, opts);
+            annotation.show();
+            setTimeout(function () {
+              if (annotation) { annotation.hide(); annotation = null; }
+            }, opts.duration + 50);
+          });
+        }
+      });
+    }
+
+    function tryAttach() {
+      if (window.RoughNotation && window.RoughNotation.annotate) {
+        attachRoughNotation(window.RoughNotation.annotate);
+        return true;
+      }
+      return false;
+    }
+    if (!tryAttach()) window.addEventListener("load", tryAttach);
+  })();
+</script>
+
+<style>
+  .blog-section {
+    background: var(--color-paper);
+    padding-top: clamp(2.5rem, 6vw, 4rem);
+    padding-bottom: 5rem;
+    min-height: 0;
+    font-family: "Courier Prime", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    letter-spacing: 0.2px;
+    color: var(--color-ink);
+  }
+
+  .blog-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 18px 18px 42px;
+    overflow-x: hidden;
+  }
+
+  .blog-tabs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .blog-tab-btn {
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: var(--color-ink);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 0.25rem;
+  }
+
+  .blog-tab-btn.is-active {
+    font-weight: 700;
+  }
+
+  .blog-tabs-sep {
+    color: var(--color-muted);
+    font-size: 0.875rem;
+    font-family: inherit;
+    user-select: none;
+  }
+</style>
