@@ -2,6 +2,9 @@
  * Theme — Central design tokens for the site.
  * Use these variables in components instead of hardcoded colors.
  * Toggle dark mode via `data-theme="dark"` on <html> or system preference below.
+ *
+ * Section bands (page flow): use --color-bg. Use --color-paper for raised surfaces
+ * (inputs, cards, expanded panels) so they stay one step lighter/darker than the page.
  */
 
 :root {

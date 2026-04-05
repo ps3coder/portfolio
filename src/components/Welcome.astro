@@ -105,12 +105,6 @@ const { hero } = site;
 			linear-gradient(90deg, rgba(0, 0, 0, 0.46) 0%, rgba(0, 0, 0, 0.22) 55%, rgba(0, 0, 0, 0.06) 100%);
 	}
 
-	@media screen and (max-width: 768px) {
-		#hero-video {
-			filter: none;
-		}
-	}
-
 	#hero-content {
 		position: absolute;
 		top: 0;
@@ -199,10 +193,52 @@ const { hero } = site;
 
 	/* Mobile: top row — name left, block right; video scaled underneath */
 	@media screen and (max-width: 768px) {
+		/*
+		 * Desktop scrim uses a strong 90deg gradient; on narrow screens it reads as a flat dark
+		 * band above the video. Mobile-only scrim: vertical balance + vignette center aligned
+		 * with the video so the top text area and video share one continuous grade.
+		 */
+		[data-theme='dark'] {
+			--hero-scrim:
+				radial-gradient(145% 125% at 50% 72%, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.52) 58%, rgba(0, 0, 0, 0.8) 100%),
+				linear-gradient(180deg, rgba(0, 0, 0, 0.38) 0%, rgba(0, 0, 0, 0.07) 42%, rgba(0, 0, 0, 0.06) 55%, rgba(0, 0, 0, 0.36) 100%);
+		}
+
+		[data-theme='dim'] {
+			--hero-scrim:
+				radial-gradient(145% 125% at 50% 72%, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.4) 58%, rgba(0, 0, 0, 0.66) 100%),
+				linear-gradient(180deg, rgba(0, 0, 0, 0.32) 0%, rgba(0, 0, 0, 0.06) 42%, rgba(0, 0, 0, 0.05) 55%, rgba(0, 0, 0, 0.3) 100%);
+		}
+
+		[data-theme='gray'] {
+			--hero-scrim:
+				radial-gradient(145% 125% at 50% 72%, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.3) 58%, rgba(0, 0, 0, 0.5) 100%),
+				linear-gradient(180deg, rgba(0, 0, 0, 0.24) 0%, rgba(0, 0, 0, 0.04) 42%, rgba(0, 0, 0, 0.04) 55%, rgba(0, 0, 0, 0.22) 100%);
+		}
+
 		#container {
 			background: var(--color-paper);
 		}
+
+		/*
+		 * Dark-ish themes: large radial, center below the fold, so mid-screen matches the video band.
+		 */
+		[data-theme='dark'] #container,
+		[data-theme='dim'] #container,
+		[data-theme='gray'] #container {
+			background: radial-gradient(
+				ellipse 240% 165% at 50% 128%,
+				#ededed 0%,
+				#d6d6d6 22%,
+				#bababa 40%,
+				#949494 58%,
+				#5c5c5c 78%,
+				var(--color-paper) 100%
+			);
+		}
+
 		#hero-video {
+			filter: none;
 			object-fit: cover;
 			object-position: center center;
 			width: auto;
@@ -211,6 +247,8 @@ const { hero } = site;
 			left: 50%;
 			transform: translate(-50%, -45%) scale(0.8);
 			transform-origin: center center;
+			-webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 100%);
+			mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 100%);
 		}
 		#hero-content {
 			flex-direction: row;
@@ -232,6 +270,24 @@ const { hero } = site;
 		}
 		.hero-headline {
 			font-size: clamp(1.5rem, 6vw, 2rem);
+		}
+
+		/*
+		 * Mobile: contrast against the graded hero (gradient + scrim + video).
+		 * Light base + difference inverts locally vs the backdrop (B/W-ish without per-theme hacks).
+		 * CTAs stay theme --color-ink so Rough Notation and mixed backdrops stay predictable.
+		 */
+		#hero-identity,
+		.hero-label,
+		.hero-headline,
+		.hero-description {
+			color: #f2f2f2;
+			mix-blend-mode: difference;
+		}
+
+		.hero-actions .btn {
+			color: var(--color-ink);
+			mix-blend-mode: normal;
 		}
 	}
 </style>
