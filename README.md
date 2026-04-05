@@ -31,6 +31,8 @@ For GitHub Pages, `astro.config.mjs` sets `site` and `base` so asset URLs work u
 /
 ├── public/              # Static files (favicons, etc.) → copied to site root
 ├── src/
+│   ├── data/
+│   │   └── site.json    # Site copy, projects, experience, skills diagrams, etc.
 │   ├── assets/          # Images, SVGs referenced from components
 │   ├── components/      # Page sections (Welcome, Projects, About, …)
 │   ├── layouts/         # Layout.astro (global shell, theme UI)

@@ -1,38 +1,22 @@
 ---
 /**
  * Projects — Collage of project cards + side slot; Projects | Case Study tabs.
- * Section vars (--projects-*) alias global theme in theme.css for consistency.
- * For central content later, consider moving PROJECTS to src/data/projects.ts.
+ * Copy + card positions: src/data/site.json → projects
  */
-const PROJECTS = [
-  { id: "p1", tag: "PROJECT", meta: "#01 · UI / Frontend", title: "Layered Cards UI", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed commodo, arcu nec elementum congue, risus orci maximus ipsum, vel suscipit sem magna non urna. Integer vel purus a tortor varius condimentum.", tech: ["HTML", "CSS", "JavaScript", "UI"], snippet: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor." },
-  { id: "p2", tag: "PROJECT", meta: "#02 · Portfolio", title: "Minimal Portfolio Grid", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi feugiat, neque at dapibus posuere, mi nulla viverra arcu, ut malesuada justo ipsum at libero.", tech: ["Layout", "Accessibility", "Responsive"], snippet: "Lorem ipsum dolor sit amet. Consectetur adipiscing elit, sed do eiusmod." },
-  { id: "p3", tag: "PROJECT", meta: "#03 · Landing Page", title: "Product Landing Hero", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet est at urna iaculis aliquet. Vestibulum ante ipsum primis in faucibus.", tech: ["Hero", "CTA", "Motion"], snippet: "Lorem ipsum dolor sit amet, consectetur adipiscing. Ut enim ad minim." },
-  { id: "p4", tag: "PROJECT", meta: "#04 · Dashboard", title: "Stats Dashboard Widgets", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet nisi vitae ipsum aliquet interdum. Quisque ultricies, justo vel.", tech: ["Charts", "Cards", "States"], snippet: "Lorem ipsum dolor sit amet. Aenean sit amet nisi vitae ipsum aliquet." },
-  { id: "p5", tag: "PROJECT", meta: "#05 · E‑commerce", title: "Product Detail Page", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a risus nec urna pulvinar viverra. Donec sagittis, eros a dignissim varius.", tech: ["PDP", "Gallery", "Variants"], snippet: "Lorem ipsum dolor sit amet, consectetur. Etiam a risus nec urna." },
-  { id: "p6", tag: "PROJECT", meta: "#06 · Animation", title: "Hover Micro‑interactions", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus at purus a odio dignissim feugiat. Praesent tristique, lectus sit amet.", tech: ["Hover", "Easing", "Delight"], snippet: "Lorem ipsum dolor sit amet. Vivamus at purus a odio dignissim feugiat." },
-  { id: "p7", tag: "PROJECT", meta: "#07 · Components", title: "Reusable Card System", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id orci nec elit tristique laoreet. Nam bibendum, mi id.", tech: ["Components", "Tokens", "Consistency"], snippet: "Lorem ipsum dolor sit amet. Sed id orci nec elit tristique laoreet." },
-  { id: "p8", tag: "PROJECT", meta: "#08 · Case Study", title: "End‑to‑end Case Study", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut at augue sed urna pulvinar molestie. Aliquam erat volutpat. Integer.", tech: ["Research", "UX", "Delivery"], snippet: "Lorem ipsum dolor sit amet. Ut at augue sed urna pulvinar molestie." },
-];
+import site from '../data/site.json';
 
-const POSITIONS = [
-  { top: "6%", left: "6%", rot: "-8deg", z: 2 },
-  { top: "12%", left: "26%", rot: "6deg", z: 3 },
-  { top: "22%", left: "12%", rot: "-3deg", z: 4 },
-  { top: "30%", left: "32%", rot: "10deg", z: 5 },
-  { top: "40%", left: "10%", rot: "-10deg", z: 6 },
-  { top: "50%", left: "30%", rot: "2deg", z: 7 },
-  { top: "58%", left: "14%", rot: "-2deg", z: 8 },
-  { top: "64%", left: "34%", rot: "8deg", z: 9 },
-];
+const { projects: projectsData } = site;
+const PROJECTS = projectsData.items;
+const POSITIONS = projectsData.positions;
+const pt = projectsData.tabs;
 ---
 
 <section class="projects-section" id="projects" aria-label="Projects">
   <div class="projects-page">
     <div class="projects-tabs" role="tablist" aria-label="Projects or Case Study">
-      <button type="button" class="projects-tab-btn is-active" role="tab" aria-selected="true" data-view="projects">Projects</button>
-      <span class="projects-tabs-sep" aria-hidden="true">|</span>
-      <button type="button" class="projects-tab-btn" role="tab" aria-selected="false" data-view="case-study">Case Study</button>
+      <button type="button" class="projects-tab-btn is-active" role="tab" aria-selected="true" data-view="projects">{pt.projects}</button>
+      <span class="projects-tabs-sep" aria-hidden="true">{pt.separator}</span>
+      <button type="button" class="projects-tab-btn" role="tab" aria-selected="false" data-view="case-study">{pt.caseStudy}</button>
     </div>
     <div class="projects-content" data-active-view="projects">
       <div class="projects-view" id="projectsView" aria-hidden="false">
@@ -63,7 +47,7 @@ const POSITIONS = [
     </div>
       </div>
       <div class="case-study-view" id="caseStudyView" aria-hidden="true" hidden>
-        <p class="case-study-empty">Nothing to show for now.</p>
+        <p class="case-study-empty">{projectsData.caseStudyEmpty}</p>
       </div>
     </div>
   </div>

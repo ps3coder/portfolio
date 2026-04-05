@@ -5,6 +5,7 @@
  * Add site-wide meta, fonts, and scripts here.
  */
 import '../styles/global.css';
+import site from '../data/site.json';
 
 const baseUrl = import.meta.env.BASE_URL.endsWith('/')
 	? import.meta.env.BASE_URL
@@ -31,7 +32,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith('/')
 		<link href="https://fonts.cdnfonts.com/css/dk-leftover-crayon" rel="stylesheet" />
 		<!-- Single load: Rough Notation (defer so it doesn't block parse) -->
 		<script defer src="https://unpkg.com/rough-notation@0.5.1/lib/rough-notation.iife.js"></script>
-		<title>𝖯𝖺𝗇𝗄𝖺𝗃 𝖲𝗁𝖺𝗋𝗆𝖺</title>
+		<title>{site.meta.title}</title>
 	</head>
 
 	<body>

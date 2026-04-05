@@ -2,10 +2,15 @@
 /**
  * AboutMe — Intro + background copy and links.
  * Uses global theme vars from src/styles/theme.css (--color-bg, --color-ink, --color-link).
+ * Copy: src/data/site.json → about
  */
+import site from '../data/site.json';
+
 const baseUrl = import.meta.env.BASE_URL.endsWith('/')
 	? import.meta.env.BASE_URL
 	: `${import.meta.env.BASE_URL}/`;
+
+const { about } = site;
 ---
 
 <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/pp-neue-montreal" />
@@ -14,42 +19,41 @@ const baseUrl = import.meta.env.BASE_URL.endsWith('/')
   <div class="about-page">
     <div class="about-intro">
       <h1 class="about-title">
-        My name is Pankaj Sharma and I’m a software engineer focused on building reliable, scalable backend systems.
+        {about.introTitle}
       </h1>
     
-      <p class="about-paragraph">
-        I work primarily with Python and JavaScript, building APIs, real-time services, and cloud-backed applications. I care about clean architecture, performance, and long-term maintainability over quick fixes.
-      </p>
+      {about.introParagraphs.map((p) => (
+        <p class="about-paragraph">{p}</p>
+      ))}
     
       <p class="about-paragraph">
-        If you'd like to discuss a project, collaboration, or opportunity, feel free to reach out at
-        <a class="about-link" href="mailto:ps3threee@email.com">ps3threee@email.com</a>
+        {about.outreachPrefix}{' '}
+        <a class="about-link" href={`mailto:${about.email}`}>{about.email}</a>
       </p>
     
       <p class="about-links">
-        <a class="about-link" href="https://github.com/yourusername" target="_blank" rel="noopener">GitHub</a>
+        {about.social.map((s, i) => (
+          <>
+            {i > 0 && <span class="about-sep">|</span>}
+            <a class="about-link" href={s.href} target="_blank" rel="noopener">{s.label}</a>
+          </>
+        ))}
         <span class="about-sep">|</span>
-        <a class="about-link" href="https://www.linkedin.com/in/yourusername" target="_blank" rel="noopener">LinkedIn</a>
-        <span class="about-sep">|</span>
-        <a class="about-link" href={`${baseUrl}resume.pdf`} target="_blank" rel="noopener">Resume</a>
+        <a class="about-link" href={`${baseUrl}${about.resume.file}`} target="_blank" rel="noopener">{about.resume.label}</a>
       </p>
     
       <p class="about-paragraph about-paragraph--spaced">
-        I’m a Computer Engineering graduate (GTU, 2025) with hands-on experience from backend and cloud engineering internships. I’ve worked on real-time systems, AI-powered APIs, authentication flows, and cloud deployments using AWS and Docker. Most of my learning comes from building real projects and iterating on better system design with each build.
+        {about.closingParagraph}
       </p>
     </div>
     
 
     <div class="about-background" aria-label="Background">
-      <h2 class="about-background-title">Background</h2>
+      <h2 class="about-background-title">{about.backgroundTitle}</h2>
     
-      <p class="about-background-text">
-        I started my journey in software development during my Computer Engineering studies at Gujarat Technological University (GTU), where I built a strong foundation in data structures, databases, and web development. Over time, I gravitated toward backend engineering and system design through hands-on projects.
-      </p>
-    
-      <p class="about-background-text">
-        During my internships, I worked on real-time backend systems, AI-powered APIs, authentication flows, and cloud infrastructure using AWS and Docker. These experiences helped me understand how production systems are built, deployed, and maintained at scale, and shaped my interest in building reliable backend services.
-      </p>
+      {about.backgroundParagraphs.map((p) => (
+        <p class="about-background-text">{p}</p>
+      ))}
     </div>
     
   </div>

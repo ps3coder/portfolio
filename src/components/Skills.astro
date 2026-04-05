@@ -1,130 +1,32 @@
 ---
 /**
  * Skills — Overview (Mermaid gitGraph) + Details tab.
- * Uses global --color-bg, --color-ink, --color-muted from theme.css.
+ * Diagram + tabs: src/data/site.json → skills
  */
+import site from '../data/site.json';
+
+const { skills } = site;
+const mermaidMobile = skills.mermaidMobileLines.join('\n');
+const mermaidPc = skills.mermaidPcLines.join('\n');
+const st = skills.tabs;
 ---
 
 <section class="skills-section" id="skills" aria-label="Skills">
   <div class="skills-page">
       <div class="skills-tabs" role="tablist" aria-label="Skills view">
-        <button type="button" class="skills-tab-btn is-active" role="tab" aria-selected="true" data-view="view-1">Overview</button>
-        <span class="skills-tabs-sep" aria-hidden="true">|</span>
-        <button type="button" class="skills-tab-btn" role="tab" aria-selected="false" data-view="view-2">Details</button>
+        <button type="button" class="skills-tab-btn is-active" role="tab" aria-selected="true" data-view="view-1">{st.overview}</button>
+        <span class="skills-tabs-sep" aria-hidden="true">{st.separator}</span>
+        <button type="button" class="skills-tab-btn" role="tab" aria-selected="false" data-view="view-2">{st.details}</button>
       </div>
     <div class="skills-content" data-active-view="view-1">
       <div class="skills-view skills-view-1" id="skillsView1" aria-hidden="false">
     <!-- Mobile: vertical (TB) -->
-    <div class="mermaid mermaid-mobile">
-gitGraph TB:
-  commit id: "Backend"
-  branch Services
-  commit id: "Python"
-  commit id: "Django, DRF, FastAPI"
-  commit id: "Node.js"
-  commit id: "REST APIs"
-  commit id: "Real-time APIs SSE"
-  checkout main
-  branch API_Design
-  commit id: "RESTful Services"
-  commit id: "Auth and Authorization"
-  commit id: "Rate Limiting, Validation"
-  checkout main
-  branch Integrations
-  commit id: "AI Services, LLM APIs"
-  commit id: "Third-Party API Integration"
-  commit id: "Webhooks, External Services"
-  checkout main
-  branch Auth_Identity
-  commit id: "JWT-based Auth"
-  commit id: "OAuth 2.0, Social Login"
-  commit id: "RBAC"
-  checkout main
-  merge Services
-  merge API_Design
-  merge Integrations
-  merge Auth_Identity
-  commit id: "Data and Storage"
-  branch Data_Storage
-  commit id: "PostgreSQL, MySQL"
-  commit id: "MongoDB, DynamoDB"
-  commit id: "Redis Caching"
-  checkout main
-  branch Distributed
-  commit id: "Service-Oriented Architecture"
-  commit id: "API Gateway Pattern"
-  commit id: "Microservices"
-  checkout main
-  branch Cloud_DevOps
-  commit id: "AWS EC2, Lambda, S3, RDS, IAM, VPC"
-  commit id: "Docker"
-  commit id: "Linux Deployment"
-  checkout main
-  merge Data_Storage
-  merge Distributed
-  merge Cloud_DevOps
-    </div>
+    <div class="mermaid mermaid-mobile">{mermaidMobile}</div>
     <!-- PC: landscape (LR) -->
-    <div class="mermaid mermaid-pc">
-gitGraph LR:
-  commit id: "Backend"
-  branch Services
-  commit id: "Python"
-  commit id: "Django"
-  commit id: "DRF"
-  commit id: "FastAPI"
-  commit id: "Node.js"
-  commit id: "REST APIs"
-  commit id: "GraphQL"
-  commit id: "SSE"
-  checkout main
-  branch API_Design
-  commit id: "RESTful"
-  commit id: " Auth"
-  commit id: "Rate Limiting"
-  commit id: "Caching"
-  commit id: "Validation"
-  commit id: "logging"
-  commit id: "Docs"
-  checkout main
-  branch Integrations
-  commit id: "AI Services"
-  commit id: "LLM APIs"
-  commit id: "Third-Party API Integration"
-  commit id: "Webhooks, External Services"
-  checkout main
-  branch Auth_Identity
-  commit id: "JWT-based Auth"
-  commit id: "OAuth 2.0, Social Login"
-  commit id: "RBAC"
-  checkout main
-  merge Services
-  merge API_Design
-  merge Integrations
-  merge Auth_Identity
-  commit id: "Data and Storage"
-  branch Data_Storage
-  commit id: "PostgreSQL, MySQL"
-  commit id: "MongoDB, DynamoDB"
-  commit id: "Redis Caching"
-  checkout main
-  branch Distributed
-  commit id: "Service-Oriented Architecture"
-  commit id: "API Gateway Pattern"
-  commit id: "Microservices"
-  checkout main
-  branch Cloud_DevOps
-  commit id: "AWS EC2, Lambda, S3, RDS, IAM, VPC"
-  commit id: "Docker"
-  commit id: "Linux Deployment"
-  checkout main
-  merge Data_Storage
-  merge Distributed
-  merge Cloud_DevOps
-    </div>
+    <div class="mermaid mermaid-pc">{mermaidPc}</div>
       </div>
       <div class="skills-view skills-view-2" id="skillsView2" aria-hidden="true" hidden>
-        <p class="skills-empty">Nothing to show here for now.</p>
+        <p class="skills-empty">{skills.detailsEmpty}</p>
       </div>
     </div>
   </div>
@@ -201,9 +103,8 @@ gitGraph LR:
   })();
 </script>
 <!-- All commits: red dots + click -> console.log. Branch labels: click -> console.log. -->
-<script is:inline>
+<script define:vars={{ BRANCH_LABELS: site.skills.branchLabels }}>
   (function () {
-    var BRANCH_LABELS = ["main", "Services", "API_Design", "Integrations", "Auth_Identity", "Data_Storage", "Distributed", "Cloud_DevOps"];
 
     function getTextContent(el) {
       return (el.textContent || "").trim().replace(/\s+/g, " ");

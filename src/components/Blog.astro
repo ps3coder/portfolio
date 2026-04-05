@@ -1,15 +1,19 @@
 ---
 /**
  * Blog — Blogs | Open-Source tabs (same UI as Experience/Skills). Content TBD.
+ * Tab labels: src/data/site.json → blog
  */
+import site from '../data/site.json';
+
+const bt = site.blog.tabs;
 ---
 
 <section class="blog-section" id="blog" aria-label="Blog">
   <div class="blog-page">
     <div class="blog-tabs" role="tablist" aria-label="Blogs or Open-Source">
-      <button type="button" class="blog-tab-btn is-active" role="tab" aria-selected="true" data-view="blogs">Blogs</button>
-      <span class="blog-tabs-sep" aria-hidden="true">|</span>
-      <button type="button" class="blog-tab-btn" role="tab" aria-selected="false" data-view="open-source">Open-Source</button>
+      <button type="button" class="blog-tab-btn is-active" role="tab" aria-selected="true" data-view="blogs">{bt.blogs}</button>
+      <span class="blog-tabs-sep" aria-hidden="true">{bt.separator}</span>
+      <button type="button" class="blog-tab-btn" role="tab" aria-selected="false" data-view="open-source">{bt.openSource}</button>
     </div>
   </div>
 </section>

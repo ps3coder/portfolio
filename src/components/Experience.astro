@@ -1,49 +1,24 @@
 ---
 /**
  * Experience — Experience | Work tabs; experience table + expandable details (Kindle-like B/W).
+ * Copy: src/data/site.json → experience
  */
 import { Image } from "astro:assets";
 import qrImage from "../assets/QR_black.png";
-const EXPERIENCES = [
-  {
-    company: "Sahana System Limited",
-    duration: "Jun '24 – Aug '24",
-    role: "Cloud Engineer / DevOps Intern",
-    summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
-    achievements: ["Lorem ipsum dolor sit amet.", "Consectetur adipiscing elit sed do.", "Ut enim ad minim veniam quis."],
-    techStack: ["Python", "Docker", "AWS", "GitHub Actions"],
-    projects: [{ name: "Project 1", url: "#" }, { name: "Project 2", url: "#" }],
-    certificate: { name: "View Certificate", url: "#" },
-  },
-  {
-    company: "SNB Innovations LLP.",
-    duration: "May '25 – Sep '25",
-    role: "Full Stack Developer Intern",
-    summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit.",
-    achievements: ["Lorem ipsum dolor sit amet.", "Duis aute irure dolor.", "Excepteur sint occaecat cupidatat."],
-    techStack: ["React", "Node.js", "PostgreSQL", "REST"],
-    projects: [{ name: "Project A", url: "#" }, { name: "Project B", url: "#" }],
-    certificate: { name: "View Certificate", url: "#" },
-  },
-  {
-    company: "Size Metrics Design & Engineering",
-    duration: "Nov '25 – Working",
-    role: "Jr. Python Developer",
-    summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam.",
-    achievements: ["Lorem ipsum dolor sit amet.", "Quis nostrud exercitation ullamco.", "Laboris nisi ut aliquip ex ea."],
-    techStack: ["Python", "Django", "SQL", "Git"],
-    projects: [{ name: "Project X", url: "#" }],
-    certificate: { name: "View Certificate", url: "#" },
-  },
-];
+import site from '../data/site.json';
+
+const { experience: expData } = site;
+const EXPERIENCES = expData.items;
+const dl = expData.detailLabels;
+const et = expData.tabs;
 ---
 
 <section class="experience-section" id="experience" aria-label="Experience">
   <div class="experience-page">
     <div class="experience-tabs" role="tablist" aria-label="Experience or Work">
-      <button type="button" class="experience-tab-btn is-active" role="tab" aria-selected="true" data-view="experience">Experience</button>
-      <span class="experience-tabs-sep" aria-hidden="true">|</span>
-      <button type="button" class="experience-tab-btn" role="tab" aria-selected="false" data-view="work">Work</button>
+      <button type="button" class="experience-tab-btn is-active" role="tab" aria-selected="true" data-view="experience">{et.experience}</button>
+      <span class="experience-tabs-sep" aria-hidden="true">{et.separator}</span>
+      <button type="button" class="experience-tab-btn" role="tab" aria-selected="false" data-view="work">{et.work}</button>
     </div>
     <div class="experience-content" data-active-view="experience">
       <div class="experience-view" id="experienceView" aria-hidden="false">
@@ -60,25 +35,25 @@ const EXPERIENCES = [
               </div>
               <div class="experience-detail" id={`experience-detail-${i}`} role="region" aria-label={`Details for ${exp.company}`} aria-hidden="true">
                 <div class="experience-detail__inner">
-                  <p class="experience-detail__label">Role Summary</p>
+                  <p class="experience-detail__label">{dl.roleSummary}</p>
                   <p class="experience-detail__summary">{exp.summary}</p>
-                  <p class="experience-detail__label">Key Achievements</p>
+                  <p class="experience-detail__label">{dl.keyAchievements}</p>
                   <ul class="experience-detail__list">
                     {exp.achievements.map((a) => <li>{a}</li>)}
                   </ul>
-                  <p class="experience-detail__label">Tech Stack</p>
+                  <p class="experience-detail__label">{dl.techStack}</p>
                   <p class="experience-detail__tech">{exp.techStack.join(" | ")}</p>
-                  <p class="experience-detail__label">Projects</p>
+                  <p class="experience-detail__label">{dl.projects}</p>
                   <p class="experience-detail__links">
                     {exp.projects.map((p) => (
                       <a href={p.url} class="experience-detail__link">{p.name}</a>
                     ))}
                   </p>
-                  <p class="experience-detail__label">Certificates</p>
+                  <p class="experience-detail__label">{dl.certificates}</p>
                   <p class="experience-detail__links">
                     <a href={exp.certificate.url} class="experience-detail__link">{exp.certificate.name}</a>
                   </p>
-                  <Image src={qrImage} width={80} height={80} alt="QR code" class="experience-detail__qr" />
+                  <Image src={qrImage} width={80} height={80} alt={expData.qrAlt} class="experience-detail__qr" />
                 </div>
               </div>
             </div>
@@ -86,7 +61,7 @@ const EXPERIENCES = [
         </div>
       </div>
       <div class="work-view" id="workView" aria-hidden="true" hidden>
-        <p class="work-empty">Nothing to show for now.</p>
+        <p class="work-empty">{expData.workEmpty}</p>
       </div>
     </div>
   </div>

@@ -2,15 +2,19 @@
 /**
  * Welcome — Hero with full-screen video, overlay copy, and CTA buttons.
  * Uses theme vars for background and text; video loads lazily and plays when in view.
+ * Copy: src/data/site.json → hero
  */
+import site from '../data/site.json';
+
+const { hero } = site;
 ---
 
 <div id="container">
 
 	<video
 		id="hero-video"
-		data-video-src="https://res.cloudinary.com/dstaxkfml/video/upload/f_auto,q_auto:low/22370-vmake_h4mfr3.webm"
-		poster="https://res.cloudinary.com/dstaxkfml/video/upload/so_0,w_800,f_jpg,q_auto:low/22370-vmake_h4mfr3"
+		data-video-src={hero.videoSrc}
+		poster={hero.poster}
 		autoplay
 		muted
 		loop
@@ -19,14 +23,15 @@
 	></video>
 	<div id="hero-scrim" aria-hidden="true"></div>
 	<header id="hero-content">
-		<div id="hero-identity">Pankaj Sharma</div>
+		<div id="hero-identity">{hero.identity}</div>
 		<div id="hero-main">
-			<p class="hero-label">Python Developer</p>
-			<h1 class="hero-headline">Building fast and scalable backend systems.</h1>
-			<p class="hero-description">I focus on automation, APIs, data extraction, and performance-driven development using Python.</p>
+			<p class="hero-label">{hero.label}</p>
+			<h1 class="hero-headline">{hero.headline}</h1>
+			<p class="hero-description">{hero.description}</p>
 			<div class="hero-actions">
-				<a href="#projects" class="btn btn-primary">View Projects</a>
-				<a href="#contact" class="btn btn-secondary">Contact</a>
+				{hero.ctas.map((cta) => (
+					<a href={cta.href} class={`btn btn-${cta.variant}`}>{cta.label}</a>
+				))}
 			</div>
 		</div>
 	</header>

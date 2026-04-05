@@ -1,0 +1,339 @@
+{
+	"meta": {
+		"title": "𝖯𝖺𝗇𝗄𝖺𝗃 𝖲𝗁𝖺𝗋𝗆𝖺"
+	},
+	"hero": {
+		"videoSrc": "https://res.cloudinary.com/dstaxkfml/video/upload/f_auto,q_auto:low/22370-vmake_h4mfr3.webm",
+		"poster": "https://res.cloudinary.com/dstaxkfml/video/upload/so_0,w_800,f_jpg,q_auto:low/22370-vmake_h4mfr3",
+		"identity": "Pankaj Sharma",
+		"label": "Python Developer",
+		"headline": "Building fast and scalable backend systems.",
+		"description": "I focus on automation, APIs, data extraction, and performance-driven development using Python.",
+		"ctas": [
+			{ "label": "View Projects", "href": "#projects", "variant": "primary" },
+			{ "label": "Contact", "href": "#contact", "variant": "secondary" }
+		]
+	},
+	"projects": {
+		"tabs": {
+			"projects": "Projects",
+			"caseStudy": "Case Study",
+			"separator": "|"
+		},
+		"caseStudyEmpty": "Nothing to show for now.",
+		"positions": [
+			{ "top": "6%", "left": "6%", "rot": "-8deg", "z": 2 },
+			{ "top": "12%", "left": "26%", "rot": "6deg", "z": 3 },
+			{ "top": "22%", "left": "12%", "rot": "-3deg", "z": 4 },
+			{ "top": "30%", "left": "32%", "rot": "10deg", "z": 5 },
+			{ "top": "40%", "left": "10%", "rot": "-10deg", "z": 6 },
+			{ "top": "50%", "left": "30%", "rot": "2deg", "z": 7 },
+			{ "top": "58%", "left": "14%", "rot": "-2deg", "z": 8 },
+			{ "top": "64%", "left": "34%", "rot": "8deg", "z": 9 }
+		],
+		"items": [
+			{
+				"id": "p1",
+				"tag": "PROJECT",
+				"meta": "#01 · UI / Frontend",
+				"title": "Layered Cards UI",
+				"desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed commodo, arcu nec elementum congue, risus orci maximus ipsum, vel suscipit sem magna non urna. Integer vel purus a tortor varius condimentum.",
+				"tech": ["HTML", "CSS", "JavaScript", "UI"],
+				"snippet": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor."
+			},
+			{
+				"id": "p2",
+				"tag": "PROJECT",
+				"meta": "#02 · Portfolio",
+				"title": "Minimal Portfolio Grid",
+				"desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi feugiat, neque at dapibus posuere, mi nulla viverra arcu, ut malesuada justo ipsum at libero.",
+				"tech": ["Layout", "Accessibility", "Responsive"],
+				"snippet": "Lorem ipsum dolor sit amet. Consectetur adipiscing elit, sed do eiusmod."
+			},
+			{
+				"id": "p3",
+				"tag": "PROJECT",
+				"meta": "#03 · Landing Page",
+				"title": "Product Landing Hero",
+				"desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet est at urna iaculis aliquet. Vestibulum ante ipsum primis in faucibus.",
+				"tech": ["Hero", "CTA", "Motion"],
+				"snippet": "Lorem ipsum dolor sit amet, consectetur adipiscing. Ut enim ad minim."
+			},
+			{
+				"id": "p4",
+				"tag": "PROJECT",
+				"meta": "#04 · Dashboard",
+				"title": "Stats Dashboard Widgets",
+				"desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet nisi vitae ipsum aliquet interdum. Quisque ultricies, justo vel.",
+				"tech": ["Charts", "Cards", "States"],
+				"snippet": "Lorem ipsum dolor sit amet. Aenean sit amet nisi vitae ipsum aliquet."
+			},
+			{
+				"id": "p5",
+				"tag": "PROJECT",
+				"meta": "#05 · E‑commerce",
+				"title": "Product Detail Page",
+				"desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a risus nec urna pulvinar viverra. Donec sagittis, eros a dignissim varius.",
+				"tech": ["PDP", "Gallery", "Variants"],
+				"snippet": "Lorem ipsum dolor sit amet, consectetur. Etiam a risus nec urna."
+			},
+			{
+				"id": "p6",
+				"tag": "PROJECT",
+				"meta": "#06 · Animation",
+				"title": "Hover Micro‑interactions",
+				"desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus at purus a odio dignissim feugiat. Praesent tristique, lectus sit amet.",
+				"tech": ["Hover", "Easing", "Delight"],
+				"snippet": "Lorem ipsum dolor sit amet. Vivamus at purus a odio dignissim feugiat."
+			},
+			{
+				"id": "p7",
+				"tag": "PROJECT",
+				"meta": "#07 · Components",
+				"title": "Reusable Card System",
+				"desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id orci nec elit tristique laoreet. Nam bibendum, mi id.",
+				"tech": ["Components", "Tokens", "Consistency"],
+				"snippet": "Lorem ipsum dolor sit amet. Sed id orci nec elit tristique laoreet."
+			},
+			{
+				"id": "p8",
+				"tag": "PROJECT",
+				"meta": "#08 · Case Study",
+				"title": "End‑to‑end Case Study",
+				"desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut at augue sed urna pulvinar molestie. Aliquam erat volutpat. Integer.",
+				"tech": ["Research", "UX", "Delivery"],
+				"snippet": "Lorem ipsum dolor sit amet. Ut at augue sed urna pulvinar molestie."
+			}
+		]
+	},
+	"about": {
+		"introTitle": "My name is Pankaj Sharma and I’m a software engineer focused on building reliable, scalable backend systems.",
+		"introParagraphs": [
+			"I work primarily with Python and JavaScript, building APIs, real-time services, and cloud-backed applications. I care about clean architecture, performance, and long-term maintainability over quick fixes."
+		],
+		"outreachPrefix": "If you'd like to discuss a project, collaboration, or opportunity, feel free to reach out at",
+		"email": "ps3threee@email.com",
+		"social": [
+			{ "label": "GitHub", "href": "https://github.com/yourusername" },
+			{ "label": "LinkedIn", "href": "https://www.linkedin.com/in/yourusername" }
+		],
+		"resume": { "label": "Resume", "file": "resume.pdf" },
+		"closingParagraph": "I’m a Computer Engineering graduate (GTU, 2025) with hands-on experience from backend and cloud engineering internships. I’ve worked on real-time systems, AI-powered APIs, authentication flows, and cloud deployments using AWS and Docker. Most of my learning comes from building real projects and iterating on better system design with each build.",
+		"backgroundTitle": "Background",
+		"backgroundParagraphs": [
+			"I started my journey in software development during my Computer Engineering studies at Gujarat Technological University (GTU), where I built a strong foundation in data structures, databases, and web development. Over time, I gravitated toward backend engineering and system design through hands-on projects.",
+			"During my internships, I worked on real-time backend systems, AI-powered APIs, authentication flows, and cloud infrastructure using AWS and Docker. These experiences helped me understand how production systems are built, deployed, and maintained at scale, and shaped my interest in building reliable backend services."
+		]
+	},
+	"skills": {
+		"tabs": {
+			"overview": "Overview",
+			"details": "Details",
+			"separator": "|"
+		},
+		"detailsEmpty": "Nothing to show here for now.",
+		"branchLabels": [
+			"main",
+			"Services",
+			"API_Design",
+			"Integrations",
+			"Auth_Identity",
+			"Data_Storage",
+			"Distributed",
+			"Cloud_DevOps"
+		],
+		"mermaidMobileLines": [
+			"gitGraph TB:",
+			"  commit id: \"Backend\"",
+			"  branch Services",
+			"  commit id: \"Python\"",
+			"  commit id: \"Django, DRF, FastAPI\"",
+			"  commit id: \"Node.js\"",
+			"  commit id: \"REST APIs\"",
+			"  commit id: \"Real-time APIs SSE\"",
+			"  checkout main",
+			"  branch API_Design",
+			"  commit id: \"RESTful Services\"",
+			"  commit id: \"Auth and Authorization\"",
+			"  commit id: \"Rate Limiting, Validation\"",
+			"  checkout main",
+			"  branch Integrations",
+			"  commit id: \"AI Services, LLM APIs\"",
+			"  commit id: \"Third-Party API Integration\"",
+			"  commit id: \"Webhooks, External Services\"",
+			"  checkout main",
+			"  branch Auth_Identity",
+			"  commit id: \"JWT-based Auth\"",
+			"  commit id: \"OAuth 2.0, Social Login\"",
+			"  commit id: \"RBAC\"",
+			"  checkout main",
+			"  merge Services",
+			"  merge API_Design",
+			"  merge Integrations",
+			"  merge Auth_Identity",
+			"  commit id: \"Data and Storage\"",
+			"  branch Data_Storage",
+			"  commit id: \"PostgreSQL, MySQL\"",
+			"  commit id: \"MongoDB, DynamoDB\"",
+			"  commit id: \"Redis Caching\"",
+			"  checkout main",
+			"  branch Distributed",
+			"  commit id: \"Service-Oriented Architecture\"",
+			"  commit id: \"API Gateway Pattern\"",
+			"  commit id: \"Microservices\"",
+			"  checkout main",
+			"  branch Cloud_DevOps",
+			"  commit id: \"AWS EC2, Lambda, S3, RDS, IAM, VPC\"",
+			"  commit id: \"Docker\"",
+			"  commit id: \"Linux Deployment\"",
+			"  checkout main",
+			"  merge Data_Storage",
+			"  merge Distributed",
+			"  merge Cloud_DevOps"
+		],
+		"mermaidPcLines": [
+			"gitGraph LR:",
+			"  commit id: \"Backend\"",
+			"  branch Services",
+			"  commit id: \"Python\"",
+			"  commit id: \"Django\"",
+			"  commit id: \"DRF\"",
+			"  commit id: \"FastAPI\"",
+			"  commit id: \"Node.js\"",
+			"  commit id: \"REST APIs\"",
+			"  commit id: \"GraphQL\"",
+			"  commit id: \"SSE\"",
+			"  checkout main",
+			"  branch API_Design",
+			"  commit id: \"RESTful\"",
+			"  commit id: \" Auth\"",
+			"  commit id: \"Rate Limiting\"",
+			"  commit id: \"Caching\"",
+			"  commit id: \"Validation\"",
+			"  commit id: \"logging\"",
+			"  commit id: \"Docs\"",
+			"  checkout main",
+			"  branch Integrations",
+			"  commit id: \"AI Services\"",
+			"  commit id: \"LLM APIs\"",
+			"  commit id: \"Third-Party API Integration\"",
+			"  commit id: \"Webhooks, External Services\"",
+			"  checkout main",
+			"  branch Auth_Identity",
+			"  commit id: \"JWT-based Auth\"",
+			"  commit id: \"OAuth 2.0, Social Login\"",
+			"  commit id: \"RBAC\"",
+			"  checkout main",
+			"  merge Services",
+			"  merge API_Design",
+			"  merge Integrations",
+			"  merge Auth_Identity",
+			"  commit id: \"Data and Storage\"",
+			"  branch Data_Storage",
+			"  commit id: \"PostgreSQL, MySQL\"",
+			"  commit id: \"MongoDB, DynamoDB\"",
+			"  commit id: \"Redis Caching\"",
+			"  checkout main",
+			"  branch Distributed",
+			"  commit id: \"Service-Oriented Architecture\"",
+			"  commit id: \"API Gateway Pattern\"",
+			"  commit id: \"Microservices\"",
+			"  checkout main",
+			"  branch Cloud_DevOps",
+			"  commit id: \"AWS EC2, Lambda, S3, RDS, IAM, VPC\"",
+			"  commit id: \"Docker\"",
+			"  commit id: \"Linux Deployment\"",
+			"  checkout main",
+			"  merge Data_Storage",
+			"  merge Distributed",
+			"  merge Cloud_DevOps"
+		]
+	},
+	"experience": {
+		"tabs": {
+			"experience": "Experience",
+			"work": "Work",
+			"separator": "|"
+		},
+		"workEmpty": "Nothing to show for now.",
+		"qrAlt": "QR code",
+		"detailLabels": {
+			"roleSummary": "Role Summary",
+			"keyAchievements": "Key Achievements",
+			"techStack": "Tech Stack",
+			"projects": "Projects",
+			"certificates": "Certificates"
+		},
+		"items": [
+			{
+				"company": "Sahana System Limited",
+				"duration": "Jun '24 – Aug '24",
+				"role": "Cloud Engineer / DevOps Intern",
+				"summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
+				"achievements": [
+					"Lorem ipsum dolor sit amet.",
+					"Consectetur adipiscing elit sed do.",
+					"Ut enim ad minim veniam quis."
+				],
+				"techStack": ["Python", "Docker", "AWS", "GitHub Actions"],
+				"projects": [
+					{ "name": "Project 1", "url": "#" },
+					{ "name": "Project 2", "url": "#" }
+				],
+				"certificate": { "name": "View Certificate", "url": "#" }
+			},
+			{
+				"company": "SNB Innovations LLP.",
+				"duration": "May '25 – Sep '25",
+				"role": "Full Stack Developer Intern",
+				"summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit.",
+				"achievements": [
+					"Lorem ipsum dolor sit amet.",
+					"Duis aute irure dolor.",
+					"Excepteur sint occaecat cupidatat."
+				],
+				"techStack": ["React", "Node.js", "PostgreSQL", "REST"],
+				"projects": [
+					{ "name": "Project A", "url": "#" },
+					{ "name": "Project B", "url": "#" }
+				],
+				"certificate": { "name": "View Certificate", "url": "#" }
+			},
+			{
+				"company": "Size Metrics Design & Engineering",
+				"duration": "Nov '25 – Working",
+				"role": "Jr. Python Developer",
+				"summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam.",
+				"achievements": [
+					"Lorem ipsum dolor sit amet.",
+					"Quis nostrud exercitation ullamco.",
+					"Laboris nisi ut aliquip ex ea."
+				],
+				"techStack": ["Python", "Django", "SQL", "Git"],
+				"projects": [{ "name": "Project X", "url": "#" }],
+				"certificate": { "name": "View Certificate", "url": "#" }
+			}
+		]
+	},
+	"blog": {
+		"tabs": {
+			"blogs": "Blogs",
+			"openSource": "Open-Source",
+			"separator": "|"
+		}
+	},
+	"contact": {
+		"form": {
+			"nameLabel": "Name",
+			"namePlaceholder": "Your name",
+			"emailLabel": "Email",
+			"emailPlaceholder": "your@email.com",
+			"messageLabel": "Message",
+			"messagePlaceholder": "Your message",
+			"submitLabel": "Send"
+		}
+	},
+	"footer": {
+		"text": "Made with care and patient."
+	}
+}

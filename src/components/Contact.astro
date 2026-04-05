@@ -1,7 +1,11 @@
 ---
 /**
  * Contact — Left: simple B&W form; right: empty. Form only for now.
+ * Labels: src/data/site.json → contact
  */
+import site from '../data/site.json';
+
+const f = site.contact.form;
 ---
 
 <section class="contact-section" id="contact" aria-label="Contact">
@@ -9,16 +13,16 @@
     <div class="contact-layout">
       <div class="contact-left" aria-label="Contact form">
         <form class="contact-form" action="#" method="post" aria-label="Contact form">
-          <label class="contact-label" for="contact-name">Name</label>
-          <input class="contact-input" id="contact-name" type="text" name="name" placeholder="Your name" autocomplete="name" />
+          <label class="contact-label" for="contact-name">{f.nameLabel}</label>
+          <input class="contact-input" id="contact-name" type="text" name="name" placeholder={f.namePlaceholder} autocomplete="name" />
 
-          <label class="contact-label" for="contact-email">Email</label>
-          <input class="contact-input" id="contact-email" type="email" name="email" placeholder="your@email.com" autocomplete="email" />
+          <label class="contact-label" for="contact-email">{f.emailLabel}</label>
+          <input class="contact-input" id="contact-email" type="email" name="email" placeholder={f.emailPlaceholder} autocomplete="email" />
 
-          <label class="contact-label" for="contact-message">Message</label>
-          <textarea class="contact-input contact-textarea" id="contact-message" name="message" placeholder="Your message" rows="4"></textarea>
+          <label class="contact-label" for="contact-message">{f.messageLabel}</label>
+          <textarea class="contact-input contact-textarea" id="contact-message" name="message" placeholder={f.messagePlaceholder} rows="4"></textarea>
 
-          <button class="contact-submit" type="submit">Send</button>
+          <button class="contact-submit" type="submit">{f.submitLabel}</button>
         </form>
       </div>
       <div class="contact-right" aria-label="Reserved">
