@@ -18,12 +18,14 @@ const hero = site.hero;
 					class="hero-wave"
 					src={hero.waveSrc}
 					alt="Waving hand"
+					width="64"
+					height="64"
 					loading="eager"
 					decoding="async"
 				/>
 			</h1>
 			<p class="hero-subtitle">{hero.label}</p>
-			<p class="hero-intro" set:html={hero.introHtml} />
+			<p class="hero-intro" set:html={hero.introHtml}></p>
 			<nav class="hero-ctas" aria-label="Hero links">
 				{hero.ctas?.map((cta) => (
 					<a class="hero-cta" href={cta.href}>

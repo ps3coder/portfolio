@@ -3,11 +3,11 @@
 		"title": "Pankaj Sharma"
 	},
 	"hero": {
-		"identity": "Pankaj Sharma",
+		"identity": "Pankaj S.",
 		"waveSrc": "https://res.cloudinary.com/dstaxkfml/image/upload/v1776680805/hii2_ucxekv.png",
 		"portraitSrc": "https://res.cloudinary.com/dstaxkfml/image/upload/v1776680806/me3_vwpjve.png",
 		"label": "Code, Cloud & System Experiments",
-		"introHtml": "I build products behind the screen<br />that keep everything running&nbsp;-<br />backend, cloud &amp; data systems",
+		"introHtml": "I build products b'hind the screen<br />that keep ev&rsquo;rything running&nbsp;-<br />backend, cloud &amp; data systems",
 		"ctas": [
 			{ "label": "More about me", "href": "#about", "variant": "secondary" },
 			{ "label": "View Projects", "href": "#projects", "variant": "primary" },
