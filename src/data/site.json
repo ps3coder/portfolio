@@ -1,17 +1,17 @@
 {
 	"meta": {
-		"title": "𝖯𝖺𝗇𝗄𝖺𝗃 𝖲𝗁𝖺𝗋𝗆𝖺"
+		"title": "Pankaj Sharma"
 	},
 	"hero": {
-		"videoSrc": "https://res.cloudinary.com/dstaxkfml/video/upload/f_auto,q_auto:low/22370-vmake_h4mfr3.webm",
-		"poster": "https://res.cloudinary.com/dstaxkfml/video/upload/so_0,w_800,f_jpg,q_auto:low/22370-vmake_h4mfr3",
 		"identity": "Pankaj Sharma",
-		"label": "Python Developer",
-		"headline": "Building fast and scalable backend systems.",
-		"description": "I focus on automation, APIs, data extraction, and performance-driven development using Python.",
+		"waveSrc": "https://res.cloudinary.com/dstaxkfml/image/upload/v1776680805/hii2_ucxekv.png",
+		"portraitSrc": "https://res.cloudinary.com/dstaxkfml/image/upload/v1776680806/me3_vwpjve.png",
+		"label": "Code, Cloud & System Experiments",
+		"introHtml": "I build products behind the screen<br />that keep everything running&nbsp;-<br />backend, cloud &amp; data systems",
 		"ctas": [
+			{ "label": "More about me", "href": "#about", "variant": "secondary" },
 			{ "label": "View Projects", "href": "#projects", "variant": "primary" },
-			{ "label": "Contact", "href": "#contact", "variant": "secondary" }
+			{ "label": "Contact Me", "href": "#contact", "variant": "secondary" }
 		]
 	},
 	"projects": {
@@ -334,6 +334,6 @@
 		}
 	},
 	"footer": {
-		"text": "Made with care and patient."
+		"text": "Made with care and patience."
 	}
 }
