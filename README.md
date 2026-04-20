@@ -47,3 +47,7 @@ For GitHub Pages, `astro.config.mjs` sets `site` and `base` so asset URLs work u
 
 - [deployment.md](./deployment.md) — GitHub Pages setup, first-time enablement, and common failures
 - [Astro docs](https://docs.astro.build)
+
+
+
+
