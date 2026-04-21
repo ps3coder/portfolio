@@ -243,4 +243,152 @@ const hero = site.hero;
 			z-index: 1;
 		}
 	}
+
+	/* Mobile + tablet: keep hero as a blank screen for now */
+	@media screen and (max-width: 1024px) {
+		#hero {
+			min-height: 100vh;
+			/* Quick-tweak spacing knobs (edit these) */
+			--hero-pad-top: 18.5rem;
+			--hero-pad-right: 1.5rem;
+			--hero-pad-bottom: 2.5rem;
+			--hero-pad-left: 1.2rem;
+			/* Stripe knobs (edit these) */
+			--hero-stripe-top: calc(var(--hero-pad-top) - 0.3rem);
+			--hero-stripe-height: 5.6rem;
+			--hero-stripe-left: calc(var(--hero-pad-left) - 0.4rem);
+			--hero-stripe-right: calc(var(--hero-pad-right) - 0.5rem);
+			--hero-stripe-height: 5rem;
+			/* Intro spacing knobs (edit these) */
+			--hero-intro-margin-top: 2.25rem;
+			--hero-intro-margin-right: 0rem;
+			--hero-intro-margin-bottom: 0rem;
+			--hero-intro-margin-left: 0rem;
+			/* Intro typography knobs (edit these) */
+			--hero-intro-font-size: 1.4rem;
+			--hero-intro-line-height: 1.2;
+			--hero-intro-max-width: 15.5rem;
+			/* Portrait knobs (edit these) */
+			--hero-portrait-top: auto;
+			--hero-portrait-right: auto;
+			--hero-portrait-bottom: -1rem;
+			--hero-portrait-left: 7.2rem;
+			--hero-portrait-width: min(92vw, 420px);
+			--hero-portrait-height: auto;
+			--hero-portrait-max-height: 62vh;
+
+			/* CTA group knobs (edit these) */
+			--hero-ctas-top: 28rem;
+			--hero-ctas-right: auto;
+			--hero-ctas-bottom: auto;
+			--hero-ctas-left: 0.2rem;
+			--hero-ctas-width: auto;
+			--hero-ctas-max-width: 18rem;
+			--hero-ctas-gap: 0.95rem;
+			--hero-ctas-font-size: 1.05rem;
+			--hero-ctas-line-height: 1.2;
+			--hero-ctas-letter-spacing: 0.01em;
+			--hero-ctas-color: var(--color-ink);
+		}
+
+		/* Mobile/tablet: show introHtml + portrait + CTAs */
+		#hero .hero-stripe {
+			display: none !important;
+		}
+
+		#hero .hero-inner {
+			min-height: 100vh;
+			align-items: start;
+			align-content: start;
+			padding: var(--hero-pad-top) var(--hero-pad-right) var(--hero-pad-bottom) var(--hero-pad-left);
+		}
+
+		#hero .hero-stripe {
+			display: block !important;
+			position: absolute;
+			left: var(--hero-stripe-left);
+			right: var(--hero-stripe-right);
+			top: var(--hero-stripe-top);
+			height: var(--hero-stripe-height);
+			background: #f59794;
+			opacity: 0.35;
+			pointer-events: none;
+			z-index: 0;
+		}
+
+		#hero .hero-left {
+			z-index: 1;
+		}
+
+		#hero .hero-right {
+			display: block !important;
+			position: absolute;
+			top: var(--hero-portrait-top);
+			right: var(--hero-portrait-right);
+			bottom: var(--hero-portrait-bottom);
+			left: var(--hero-portrait-left);
+			width: var(--hero-portrait-width);
+			height: var(--hero-portrait-height);
+			max-height: var(--hero-portrait-max-height);
+			pointer-events: none;
+			z-index: 1;
+		}
+
+		#hero .hero-portrait {
+			width: 100%;
+			height: 100%;
+			max-height: inherit;
+			object-fit: contain;
+			filter: grayscale(0.9);
+		}
+
+		#hero .hero-intro {
+			display: block;
+			margin: var(--hero-intro-margin-top) var(--hero-intro-margin-right) var(--hero-intro-margin-bottom)
+				var(--hero-intro-margin-left);
+			font-size: var(--hero-intro-font-size);
+			line-height: var(--hero-intro-line-height);
+			max-width: var(--hero-intro-max-width);
+			width: 100%;
+		}
+
+		#hero .hero-ctas {
+			display: flex !important;
+			flex-direction: column;
+			flex-wrap: nowrap;
+			align-items: flex-start;
+			align-content: flex-start;
+			gap: var(--hero-ctas-gap);
+			position: absolute;
+			top: var(--hero-ctas-top);
+			right: var(--hero-ctas-right);
+			bottom: var(--hero-ctas-bottom);
+			left: var(--hero-ctas-left);
+			width: var(--hero-ctas-width);
+			max-width: var(--hero-ctas-max-width);
+			margin: 0;
+			font-size: var(--hero-ctas-font-size);
+			line-height: var(--hero-ctas-line-height);
+			letter-spacing: var(--hero-ctas-letter-spacing);
+			color: var(--hero-ctas-color);
+			z-index: 2;
+		}
+
+		#hero .hero-ctas .hero-cta {
+			color: inherit;
+			text-decoration: none;
+			width: fit-content;
+		}
+
+		#hero .hero-name {
+			font-size: clamp(2.25rem, 9vw, 3.1rem);
+		}
+
+		#hero .hero-wave {
+			width: 34px;
+			height: 34px;
+			scale: 1.9;
+			margin-bottom: 10px;
+		}
+	}
 </style>

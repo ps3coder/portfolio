@@ -3,4 +3,95 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout>
+	<main class="test-page bg-dots">
+		<div class="test-top-input" aria-label="Test input">
+			<input
+				id="test-input"
+				class="test-top-input__field"
+				type="text"
+				placeholder="Type here…"
+				maxlength="7"
+				autocapitalize="characters"
+				inputmode="text"
+				spellcheck="false"
+				autocomplete="off"
+			/>
+			<input id="dots-toggle" class="test-top-input__toggle" type="checkbox" />
+		</div>
+		<section class="test-inner">
+		</section>
+	</main>
 </Layout>
+
+<style>
+	.test-page {
+		min-height: 100vh;
+		padding: clamp(24px, 6vw, 64px);
+	}
+
+	/* Sits under the fixed theme slider (Layout.astro) */
+	.test-top-input {
+		position: fixed;
+		top: calc(clamp(0.75rem, 2vw, 1.25rem) + 34px);
+		right: clamp(1rem, 6vw, 6.25rem);
+		z-index: 110;
+		display: grid;
+		gap: 8px;
+		width: min(350px, 55vw);
+	}
+
+	@media screen and (max-width: 768px) {
+		.test-top-input {
+			top: calc(1.25rem + 38px);
+			right: 5.3rem;
+			width: min(260px, 65vw);
+		}
+	}
+
+	.test-top-input__label {
+		font-size: 12px;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--color-muted);
+		user-select: none;
+	}
+
+	.test-top-input__field {
+		appearance: none;
+		width: 100%;
+		border: 1px solid var(--color-border);
+		background: color-mix(in oklab, var(--color-paper) 88%, transparent);
+		color: var(--color-ink);
+		padding: 10px 12px;
+		border-radius: 12px;
+		outline: none;
+	}
+
+	@supports not (color: color-mix(in oklab, black, white)) {
+		.test-top-input__field {
+			background: var(--color-paper);
+		}
+	}
+
+	.test-top-input__field:focus {
+		border-color: color-mix(in oklab, var(--color-ink) 28%, var(--color-border));
+		box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-ink) 10%, transparent);
+	}
+
+	.test-top-input__toggle {
+		width: 18px;
+		height: 18px;
+		accent-color: var(--color-ink);
+	}
+
+	.test-inner {
+		max-width: 1100px;
+		margin: 0 auto;
+	}
+
+	.test-inner h1 {
+		margin: 0;
+		font-size: clamp(28px, 4vw, 44px);
+		letter-spacing: -0.03em;
+	}
+</style>
